@@ -1,0 +1,23 @@
+# IntelliJ IDEA files
+.idea/
+
+# Compiled class files
+target/
+
+# Log files
+*.log
+
+# Maven files
+mvnw
+mvnw.cmd
+.mvn/
+mvn/
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Gradle files
+.gradle/
+build/
