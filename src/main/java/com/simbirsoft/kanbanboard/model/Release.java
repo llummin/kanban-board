@@ -1,4 +1,4 @@
-package model;
+package com.simbirsoft.kanbanboard.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
