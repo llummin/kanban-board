@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.*;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "roles")
@@ -48,4 +50,3 @@ public class Role {
     this.users = users;
   }
 }
-
