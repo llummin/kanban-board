@@ -3,6 +3,8 @@ package com.simbirsoft.kanbanboard.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "releases")
 public record Release(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
