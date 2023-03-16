@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Projects</title>
+</head>
+<body>
+<h1>Projects</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="project : ${projects}">
+    <td th:text="${project.name}"></td>
+    <td th:text="${project.startDate}"></td>
+    <td th:text="${project.endDate}"></td>
+    <td>
+      <a th:href="@{/projects/{id}(id=${project.id})}">View</a> |
+      <a th:href="@{/projects/{id}/edit(id=${project.id})}">Edit</a> |
+      <a th:href="@{/projects/{id}/delete(id=${project.id})}">Delete</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/projects/new}">Create</a>
+</body>
+</html>
