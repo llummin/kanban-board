@@ -9,5 +9,4 @@ public class SimbirSoftKanbanBoardApplication {
   public static void main(String[] args) {
     SpringApplication.run(SimbirSoftKanbanBoardApplication.class, args);
   }
-
 }
