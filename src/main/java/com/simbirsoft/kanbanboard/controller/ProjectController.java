@@ -46,4 +46,24 @@ public class ProjectController {
     projectService.saveProject(project);
     return "redirect:/projects";
   }
+
+  @GetMapping("/{id}/edit")
+  public String showEditForm(@PathVariable Long id, Model model) {
+    model.addAttribute("project", projectService.getProjectById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Invalid project Id:" + id)));
+    return "project-edit-form";
+  }
+
+  @PostMapping("/{id}/edit")
+  public String updateProject(@PathVariable Long id, @ModelAttribute("project") Project project) {
+    project.setId(id);
+    projectService.saveProject(project);
+    return "redirect:/projects";
+  }
+
+  @GetMapping("/{id}/delete")
+  public String deleteProject(@PathVariable Long id) {
+    projectService.deleteProjectById(id);
+    return "redirect:/projects";
+  }
 }

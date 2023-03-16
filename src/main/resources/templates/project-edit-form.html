@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Project</title>
+</head>
+<body>
+<h1>Edit Project</h1>
+<form method="post" th:object="${project}" th:action="@{/projects/{id}/edit(id=${project.id})}">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" th:value="${project.name}"/><br/><br/>
+
+  <label for="startDate">Start Date:</label>
+  <input type="datetime-local" id="startDate" name="startDate"
+         th:value="${#temporals.format(project.startDate, 'dd.MM.yyyy HH:mm')}"/><br/><br/>
+
+  <label for="endDate">End Date:</label>
+  <input type="datetime-local" id="endDate" name="endDate"
+         th:value="${#temporals.format(project.startDate, 'dd.MM.yyyy HH:mm')}"/><br/><br/>
+
+  <input type="submit" value="Save"/>
+</form>
+</body>
+</html>
