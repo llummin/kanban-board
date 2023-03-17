@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Tasks</title>
+</head>
+<body>
+<h1>Tasks</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Project</th>
+    <th>Author</th>
+    <th>Performer</th>
+    <th>Release Version</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="task : ${tasks}">
+    <td th:text="${task.name}"></td>
+    <td th:text="${task.project.name}"></td>
+    <td th:text="${task.author}"></td>
+    <td th:text="${task.performer}"></td>
+    <td th:text="${task.releaseVersion}"></td>
+    <td th:text="${task.status}"></td>
+    <td>
+      <a th:href="@{/tasks/{id}(id=${task.id})}">View</a> |
+      <a th:href="@{/tasks/{id}/edit(id=${task.id})}">Edit</a> |
+      <a th:href="@{/tasks/{id}/delete(id=${task.id})}">Delete</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/tasks/new}">Create</a>
+</body>
+</html>
