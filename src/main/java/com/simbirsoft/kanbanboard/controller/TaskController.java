@@ -24,4 +24,11 @@ public class TaskController {
     model.addAttribute("tasks", tasks);
     return "tasks";
   }
+
+  @GetMapping("/{id}")
+  public String showTaskById(@PathVariable Long id, Model model) {
+    model.addAttribute("task", taskService.getTaskById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + id)));
+    return "task";
+  }
 }

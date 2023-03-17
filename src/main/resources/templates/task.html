@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Task</title>
+</head>
+<body>
+<h1>Task: <span th:text="${task.name}"></span></h1>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Author</th>
+    <th>Performer</th>
+    <th>Release Version</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td th:text="${task.name}"></td>
+    <td th:text="${task.author}"></td>
+    <td th:text="${task.performer}"></td>
+    <td th:text="${task.releaseVersion}"></td>
+    <td th:text="${task.status}"></td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/tasks}">Back to Tasks</a>
+</body>
+</html>
