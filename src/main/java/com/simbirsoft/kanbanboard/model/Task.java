@@ -1,6 +1,7 @@
 package com.simbirsoft.kanbanboard.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tasks")
@@ -12,37 +13,33 @@ public class Task {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "project_id", nullable = false)
+  @JoinColumn(name = "proj_id")
   private Project project;
 
-  @Column(name = "task_name", nullable = false)
+  @Column(name = "task_name")
   private String name;
 
-  @Column(name = "task_author", nullable = false)
+  @Column(name = "task_author")
   private String author;
 
-  @Column(name = "task_performer", nullable = false)
+  @Column(name = "task_performer")
   private String performer;
 
-  @Column(name = "task_release_version", nullable = false)
-  private String releaseVersion;
+  @Column(name = "task_status")
+  private String status;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "task_status", nullable = false)
-  private TaskStatus status;
+  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Release> releases;
 
   public Task() {
-
   }
 
-  public Task(String name, Project project, String author, String performer, String releaseVersion,
-      TaskStatus status) {
-    this.project = project;
+  public Task(String name, String author, String performer, String status, List<Release> releases) {
     this.name = name;
     this.author = author;
     this.performer = performer;
-    this.releaseVersion = releaseVersion;
     this.status = status;
+    this.releases = releases;
   }
 
   public Long getId() {
@@ -85,26 +82,19 @@ public class Task {
     this.performer = performer;
   }
 
-  public String getReleaseVersion() {
-    return releaseVersion;
-  }
-
-  public void setReleaseVersion(String releaseVersion) {
-    this.releaseVersion = releaseVersion;
-  }
-
-  public TaskStatus getStatus() {
+  public String getStatus() {
     return status;
   }
 
-  public void setStatus(TaskStatus status) {
+  public void setStatus(String status) {
     this.status = status;
   }
 
-  // Перечисление статуса задач
-  public enum TaskStatus {
-    BACKLOG,
-    IN_PROGRESS,
-    DONE
+  public List<Release> getReleases() {
+    return releases;
+  }
+
+  public void setReleases(List<Release> releases) {
+    this.releases = releases;
   }
 }
