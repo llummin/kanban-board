@@ -1,7 +1,6 @@
 package com.simbirsoft.kanbanboard.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -13,28 +12,21 @@ public class Project {
   @Column(name = "proj_id")
   private Long id;
 
-  @Column(name = "proj_name", nullable = false)
-  private String name;
+  @Column(name = "proj_title", nullable = false)
+  private String title;
 
-  @Column(name = "proj_start_date", nullable = false)
-  private LocalDateTime startDate;
-
-  @Column(name = "proj_end_date")
-  private LocalDateTime endDate;
+  @Column(name = "proj_is_open", nullable = false)
+  private Boolean isOpen;
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
   private List<Task> tasks;
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-  private List<Release> releases;
-
   public Project() {
   }
 
-  public Project(String name, LocalDateTime startDate, LocalDateTime endDate) {
-    this.name = name;
-    this.startDate = startDate;
-    this.endDate = endDate;
+  public Project(String title, Boolean isOpen) {
+    this.title = title;
+    this.isOpen = isOpen;
   }
 
   public Long getId() {
@@ -45,28 +37,20 @@ public class Project {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
-  public LocalDateTime getStartDate() {
-    return startDate;
+  public Boolean getIsOpen() {
+    return isOpen;
   }
 
-  public void setStartDate(LocalDateTime startDate) {
-    this.startDate = startDate;
-  }
-
-  public LocalDateTime getEndDate() {
-    return endDate;
-  }
-
-  public void setEndDate(LocalDateTime endDate) {
-    this.endDate = endDate;
+  public void setIsOpen(Boolean isOpen) {
+    this.isOpen = isOpen;
   }
 
   public List<Task> getTasks() {
@@ -75,13 +59,5 @@ public class Project {
 
   public void setTasks(List<Task> tasks) {
     this.tasks = tasks;
-  }
-
-  public List<Release> getReleases() {
-    return releases;
-  }
-
-  public void setReleases(List<Release> releases) {
-    this.releases = releases;
   }
 }
