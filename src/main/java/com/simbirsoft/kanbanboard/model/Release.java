@@ -13,20 +13,23 @@ public class Release {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "project_id", nullable = false)
-  private Project project;
+  @JoinColumn(name = "task_id")
+  private Task task;
 
-  @Column(name = "rls_start_date", nullable = false)
+  @Column(name = "rls_version")
+  private String version;
+
+  @Column(name = "rls_start_date")
   private LocalDateTime startDate;
 
-  @Column(name = "rls_end_date", nullable = false)
+  @Column(name = "rls_end_date")
   private LocalDateTime endDate;
 
   public Release() {
   }
 
-  public Release(Project project, LocalDateTime startDate, LocalDateTime endDate) {
-    this.project = project;
+  public Release(String version, LocalDateTime startDate, LocalDateTime endDate) {
+    this.version = version;
     this.startDate = startDate;
     this.endDate = endDate;
   }
@@ -39,12 +42,20 @@ public class Release {
     this.id = id;
   }
 
-  public Project getProject() {
-    return project;
+  public Task getTask() {
+    return task;
   }
 
-  public void setProject(Project project) {
-    this.project = project;
+  public void setTask(Task task) {
+    this.task = task;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
   }
 
   public LocalDateTime getStartDate() {
