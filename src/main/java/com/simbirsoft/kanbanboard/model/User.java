@@ -12,26 +12,22 @@ public class User {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "role_id")
+  @JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false)
   private Role role;
 
-  @Column(name = "user_username")
+  @Column(name = "user_name", nullable = false, unique = true)
   private String username;
 
-  @Column(name = "user_password")
+  @Column(name = "user_password", nullable = false)
   private String password;
-
-  @Column(name = "user_email")
-  private String email;
 
   public User() {
   }
 
-  public User(Role role, String username, String password, String email) {
+  public User(Role role, String username, String password) {
     this.role = role;
     this.username = username;
     this.password = password;
-    this.email = email;
   }
 
   public Long getId() {
@@ -64,13 +60,5 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
   }
 }

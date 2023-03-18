@@ -1,7 +1,5 @@
 package com.simbirsoft.kanbanboard.model;
 
-import java.util.HashSet;
-import java.util.Set;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,11 +11,8 @@ public class Role {
   @Column(name = "role_id")
   private Long id;
 
-  @Column(name = "role_name", unique = true, nullable = false)
+  @Column(name = "role_name", nullable = false)
   private String name;
-
-  @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
-  private Set<User> users = new HashSet<>();
 
   public Role() {
   }
@@ -40,13 +35,5 @@ public class Role {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public Set<User> getUsers() {
-    return users;
-  }
-
-  public void setUsers(Set<User> users) {
-    this.users = users;
   }
 }
