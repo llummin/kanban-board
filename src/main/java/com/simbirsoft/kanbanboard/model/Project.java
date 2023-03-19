@@ -15,8 +15,8 @@ public class Project {
   @Column(name = "proj_title", nullable = false)
   private String title;
 
-  @Column(name = "proj_is_open", nullable = false)
-  private Boolean isOpen;
+  @Column(name = "proj_is_open", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+  private Boolean isOpen = true;
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
   private List<Task> tasks;

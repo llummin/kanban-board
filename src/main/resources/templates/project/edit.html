@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Изменение проекта</title>
+</head>
+<body>
+<h1>Изменить проект</h1>
+<form method="POST" th:object="${project}" th:action="@{/projects/{id}/edit(id=${project.id})}">
+  <input type="hidden" th:field="*{id}">
+  <label for="title">Название:</label>
+  <input type="text" th:field="*{title}" id="title" required>
+  <br>
+  <label for="isOpen">Статус:</label>
+  <input type="checkbox" th:field="*{isOpen}" id="isOpen">
+  <br>
+  <button type="submit">Сохранить</button>
+</form>
+</body>
+</html>

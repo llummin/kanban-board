@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Создание проекта</title>
+</head>
+<body>
+<h1>Создать новый проект</h1>
+<form method="post" th:action="@{/projects/create}" th:object="${project}">
+  <div>
+    <label for="title">Название:</label>
+    <input type="text" id="title" th:field="*{title}" required/>
+  </div>
+  <button type="submit">Создать проект</button>
+</form>
+</body>
+</html>

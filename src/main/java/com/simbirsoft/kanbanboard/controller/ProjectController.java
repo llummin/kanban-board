@@ -1,15 +1,12 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import com.simbirsoft.kanbanboard.model.Project;
-import com.simbirsoft.kanbanboard.service.ProjectService;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.simbirsoft.kanbanboard.service.ProjectService;
+import com.simbirsoft.kanbanboard.model.Project;
+
 
 @Controller
 @RequestMapping("/projects")
@@ -23,41 +20,40 @@ public class ProjectController {
 
   @GetMapping
   public String showAllProjects(Model model) {
-    List<Project> projects = projectService.getAllProjects();
-    model.addAttribute("projects", projects);
-    return "projects";
+    model.addAttribute("project", projectService.getAllProjects());
+    return "project/index";
   }
 
   @GetMapping("/{id}")
   public String showProjectById(@PathVariable Long id, Model model) {
     model.addAttribute("project", projectService.getProjectById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid project Id:" + id)));
-    return "project";
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id)));
+    return "project/details";
   }
 
-  @GetMapping("/new")
-  public String showProjectForm(Model model) {
+  @GetMapping("/create")
+  public String createProject(Model model) {
     model.addAttribute("project", new Project());
-    return "project-form";
+    return "project/create";
   }
 
-  @PostMapping("/new")
-  public String addProject(@ModelAttribute("project") Project project) {
-    projectService.saveProject(project);
+  @PostMapping("/create")
+  public String createProject(@ModelAttribute("project") @Valid Project project) {
+    projectService.createProject(project.getTitle());
     return "redirect:/projects";
   }
 
   @GetMapping("/{id}/edit")
-  public String showEditForm(@PathVariable Long id, Model model) {
+  public String editProject(@PathVariable Long id, Model model) {
     model.addAttribute("project", projectService.getProjectById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid project Id:" + id)));
-    return "project-edit-form";
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id)));
+    return "project/edit";
   }
 
   @PostMapping("/{id}/edit")
-  public String updateProject(@PathVariable Long id, @ModelAttribute("project") Project project) {
+  public String editProject(@PathVariable Long id, @ModelAttribute("project") Project project) {
     project.setId(id);
-    projectService.saveProject(project);
+    projectService.updateProject(project);
     return "redirect:/projects";
   }
 

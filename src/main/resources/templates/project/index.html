@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Projects</title>
+</head>
+<body>
+<h1>Projects</h1>
+<a href="/projects/create" class="btn btn-primary">Создать проект</a>
+<table>
+  <thead>
+  <tr>
+    <th>Название проекта</th>
+    <th>Статус проекта</th>
+    <th>Действия</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="project : ${project}">
+    <td th:text="${project.title}"></td>
+    <td th:text="${project.isOpen ? 'Открыт' : 'Закрыт'}"></td>
+    <td>
+      <a th:href="@{/projects/{id}(id=${project.id})}">Просмотреть</a>
+      <a th:href="@{/projects/{id}/edit(id=${project.id})}">Редактировать</a>
+      <a th:href="@{/projects/{id}/delete(id=${project.id})}"
+         onclick="return confirm('Вы действительно хотите удалить этот проект?')">Удалить</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

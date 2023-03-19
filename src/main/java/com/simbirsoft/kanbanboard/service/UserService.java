@@ -41,7 +41,6 @@ public class UserService {
         .orElseThrow(() -> new IllegalArgumentException("Invalid User Id: " + id));
     existingUser.setUsername(user.getUsername());
     existingUser.setPassword(user.getPassword());
-    existingUser.setEmail(user.getEmail());
     Role role = roleRepository.findById(user.getRole().getId())
         .orElseThrow(
             () -> new IllegalArgumentException("Invalid Role Id: " + user.getRole().getId()));
