@@ -24,13 +24,6 @@ public class ProjectController {
     return "project/index";
   }
 
-  @GetMapping("/{id}")
-  public String showProjectById(@PathVariable Long id, Model model) {
-    model.addAttribute("project", projectService.getProjectById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id)));
-    return "project/details";
-  }
-
   @GetMapping("/create")
   public String createProject(Model model) {
     model.addAttribute("project", new Project());

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Список задач</title>
+</head>
+<body>
+<h1>Список задач проекта: [[${project.title}]]</h1>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Название</th>
+    <th>Автор</th>
+    <th>Исполнитель</th>
+    <th>Статус</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="task : ${tasks}">
+    <td th:text="${task.id}"></td>
+    <td th:text="${task.name}"></td>
+    <td th:text="${task.author}"></td>
+    <td th:text="${task.performer}"></td>
+    <td th:text="${task.status}"></td>
+  </tr>
+  </tbody>
+</table>
+<a href="/projects">Назад к проектам</a>
+</body>
+</html>

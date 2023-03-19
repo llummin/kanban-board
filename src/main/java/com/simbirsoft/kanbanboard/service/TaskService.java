@@ -1,5 +1,6 @@
 package com.simbirsoft.kanbanboard.service;
 
+import com.simbirsoft.kanbanboard.model.Project;
 import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,9 @@ public class TaskService {
   public void deleteTaskById(Long id) {
     taskRepository.deleteById(id);
   }
+
+  public List<Task> getTasksByProject(Project project) {
+    return taskRepository.findByProject(project);
+  }
 }
+
