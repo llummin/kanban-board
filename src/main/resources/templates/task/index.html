@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="eu">
 <head>
   <meta charset="UTF-8">
   <title>Задачи</title>
 </head>
 <body>
 <h1>Задачи проекта: <span th:text="${project.title}"></span></h1>
+<a th:href="@{/projects/{id}/create(id=${project.id})}">Создать задачу</a>
 <table border="1">
   <thead>
   <tr>

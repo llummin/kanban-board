@@ -1,20 +1,15 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import com.simbirsoft.kanbanboard.model.Project;
-import com.simbirsoft.kanbanboard.model.Release;
-import com.simbirsoft.kanbanboard.model.Task;
-import com.simbirsoft.kanbanboard.service.ProjectService;
-import com.simbirsoft.kanbanboard.service.TaskService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
+import com.simbirsoft.kanbanboard.model.*;
+import com.simbirsoft.kanbanboard.service.*;
 
 @Controller
 public class TaskController {
+
   private final TaskService taskService;
   private final ProjectService projectService;
 
@@ -30,5 +25,23 @@ public class TaskController {
     model.addAttribute("project", project);
     model.addAttribute("tasks", taskService.getTasksByProject(project));
     return "task/index";
+  }
+
+  @GetMapping("/projects/{id}/create")
+  public String createTask(@PathVariable("id") Long projectId, Model model) {
+    Project project = projectService.getProjectById(projectId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projectId));
+    model.addAttribute("project", project);
+    model.addAttribute("task", new Task());
+    return "task/create";
+  }
+
+  @PostMapping("/projects/{id}/create")
+  public String createTask(@PathVariable("id") Long projectId,
+      @ModelAttribute("task") @Validated Task task) {
+    task.setProject(projectService.getProjectById(projectId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projectId)));
+    taskService.createTask(task);
+    return "redirect:/projects/" + projectId;
   }
 }

@@ -25,8 +25,8 @@ public class TaskService {
     return taskRepository.findById(id);
   }
 
-  public Task saveTask(Task task) {
-    return taskRepository.save(task);
+  public void createTask(Task task) {
+    taskRepository.save(task);
   }
 
   public void deleteTaskById(Long id) {
@@ -37,4 +37,3 @@ public class TaskService {
     return taskRepository.findByProject(project);
   }
 }
-

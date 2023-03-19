@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Создание задачи</title>
+</head>
+<body>
+<h2>Создание задачи</h2>
+<form action="#" th:action="@{/projects/{id}/create(id=${project.id})}" th:object="${task}"
+      method="post">
+  <input type="hidden" th:field="*{id}"/>
+  <input type="hidden" th:field="*{project}"/>
+  <p>
+    <label for="name">Название:</label>
+    <input type="text" id="name" th:field="*{name}" required="required"/>
+  </p>
+  <p>
+    <label for="author">Автор:</label>
+    <input type="text" id="author" th:field="*{author}" required="required"/>
+  </p>
+  <p>
+    <label for="performer">Исполнитель:</label>
+    <input type="text" id="performer" th:field="*{performer}"/>
+  </p>
+  <p>
+    <label for="status">Статус:</label>
+    <select id="status" th:field="*{status}" required="required">
+      <option value="BACKLOG">BACKLOG</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="DONE">DONE</option>
+    </select>
+  </p>
+  <button type="submit">Создать</button>
+</form>
+</body>
+</html>
