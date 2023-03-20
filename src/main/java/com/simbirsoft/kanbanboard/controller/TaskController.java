@@ -18,7 +18,7 @@ public class TaskController {
     this.projectService = projectService;
   }
 
-  @GetMapping("/projects/{id}")
+  @GetMapping("/{id}")
   public String viewTasksByProject(@PathVariable("id") Long projectId, Model model) {
     Project project = projectService.getProjectById(projectId)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projectId));
@@ -27,7 +27,7 @@ public class TaskController {
     return "task/index";
   }
 
-  @GetMapping("/projects/{id}/create")
+  @GetMapping("/{id}/create")
   public String createTask(@PathVariable("id") Long projectId, Model model) {
     Project project = projectService.getProjectById(projectId)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projectId));
@@ -36,12 +36,12 @@ public class TaskController {
     return "task/create";
   }
 
-  @PostMapping("/projects/{id}/create")
+  @PostMapping("/{id}/create")
   public String createTask(@PathVariable("id") Long projectId,
       @ModelAttribute("task") @Validated Task task) {
     task.setProject(projectService.getProjectById(projectId)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projectId)));
     taskService.createTask(task);
-    return "redirect:/projects/" + projectId;
+    return "redirect:/" + projectId;
   }
 }

@@ -11,7 +11,7 @@
 <body>
 <div class="container">
   <h2>Создание задачи</h2>
-  <form action="#" th:action="@{/projects/{id}/create(id=${project.id})}" th:object="${task}"
+  <form action="#" th:action="@{/{id}/create(id=${project.id})}" th:object="${task}"
         method="post">
     <input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:field="*{project}"/>

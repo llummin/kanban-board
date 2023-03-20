@@ -9,7 +9,7 @@ import com.simbirsoft.kanbanboard.model.Project;
 
 
 @Controller
-@RequestMapping("/projects")
+@RequestMapping("/")
 public class ProjectController {
 
   private final ProjectService projectService;
@@ -33,7 +33,7 @@ public class ProjectController {
   @PostMapping("/create")
   public String createProject(@ModelAttribute("project") @Valid Project project) {
     projectService.createProject(project.getTitle());
-    return "redirect:/projects";
+    return "redirect:/";
   }
 
   @GetMapping("/{id}/edit")
@@ -47,12 +47,12 @@ public class ProjectController {
   public String editProject(@PathVariable Long id, @ModelAttribute("project") Project project) {
     project.setId(id);
     projectService.updateProject(project);
-    return "redirect:/projects";
+    return "redirect:/";
   }
 
   @GetMapping("/{id}/delete")
   public String deleteProject(@PathVariable Long id) {
     projectService.deleteProjectById(id);
-    return "redirect:/projects";
+    return "redirect:/";
   }
 }

@@ -1,6 +1,8 @@
 package com.simbirsoft.kanbanboard.service;
 
+import com.simbirsoft.kanbanboard.model.Project;
 import com.simbirsoft.kanbanboard.model.Release;
+import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.ReleaseRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,9 @@ public class ReleaseService {
 
   public void deleteReleaseById(Long id) {
     releaseRepository.deleteById(id);
+  }
+
+  public List<Release> getReleasesByTask(Task task) {
+    return releaseRepository.findByTask(task);
   }
 }

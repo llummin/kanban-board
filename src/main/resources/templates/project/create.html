@@ -9,7 +9,7 @@
 <body>
 <div class="container mt-5">
   <h1 class="mb-4">Создать новый проект</h1>
-  <form method="post" th:action="@{/projects/create}" th:object="${project}">
+  <form method="post" th:action="@{/create}" th:object="${project}">
     <div class="mb-3">
       <label for="title" class="form-label">Название:</label>
       <input type="text" id="title" th:field="*{title}" class="form-control" required/>

@@ -11,7 +11,7 @@
 <body>
 <div class="container">
   <h1>Изменить проект</h1>
-  <form method="POST" th:object="${project}" th:action="@{/projects/{id}/edit(id=${project.id})}">
+  <form method="POST" th:object="${project}" th:action="@{/{id}/edit(id=${project.id})}">
     <input type="hidden" th:field="*{id}">
     <div class="mb-3">
       <label for="title" class="form-label">Название:</label>
