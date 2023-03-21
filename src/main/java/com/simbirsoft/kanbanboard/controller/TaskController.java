@@ -86,6 +86,11 @@ public class TaskController {
     Task task = taskService.getTaskById(taskId)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
 
+    // Проверяем, принадлежит ли задача текущему проекту
+    if (!task.getProject().getId().equals(projId)) {
+      return "redirect:/error";
+    }
+
     model.addAttribute("project", project);
     model.addAttribute("task", task);
     return "task/edit";
