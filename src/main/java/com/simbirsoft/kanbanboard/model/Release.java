@@ -1,6 +1,7 @@
 package com.simbirsoft.kanbanboard.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -72,5 +73,11 @@ public class Release {
 
   public void setEndDate(LocalDateTime endDate) {
     this.endDate = endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+  }
+
+  public void setStartDate(LocalDate startDate) {
   }
 }

@@ -34,12 +34,11 @@ public class Task {
   public Task() {
   }
 
-  public Task(String name, String author, String performer, String status, List<Release> releases) {
+  public Task(String name, String author, String performer, String status) {
     this.name = name;
     this.author = author;
     this.performer = performer;
     this.status = status;
-    this.releases = releases;
   }
 
   public Long getId() {
@@ -97,4 +96,5 @@ public class Task {
   public void setReleases(List<Release> releases) {
     this.releases = releases;
   }
+
 }

@@ -1,6 +1,5 @@
 package com.simbirsoft.kanbanboard.repository;
 
-import com.simbirsoft.kanbanboard.model.Project;
 import com.simbirsoft.kanbanboard.model.Release;
 import com.simbirsoft.kanbanboard.model.Task;
 import java.util.List;
