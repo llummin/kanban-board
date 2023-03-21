@@ -1,6 +1,7 @@
 package com.simbirsoft.kanbanboard.service;
 
 import com.simbirsoft.kanbanboard.model.Project;
+import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.ProjectRepository;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 public class ProjectService {
 
   private final ProjectRepository projectRepository;
+  private final TaskService taskService;
 
-  public ProjectService(ProjectRepository projectRepository) {
+  public ProjectService(ProjectRepository projectRepository, TaskService taskService) {
     this.projectRepository = projectRepository;
+    this.taskService = taskService;
   }
 
   public List<Project> getAllProjects() {
@@ -29,7 +32,20 @@ public class ProjectService {
   }
 
   public void deleteProjectById(Long id) {
-    projectRepository.deleteById(id);
+    Project project = projectRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
+
+    List<Task> tasks = taskService.getTasksByProject(project);
+
+    boolean isBacklogOrInProgressTaskExist = tasks.stream()
+        .anyMatch(t -> t.getStatus().equals("BACKLOG") || t.getStatus().equals("IN_PROGRESS"));
+
+    if (isBacklogOrInProgressTaskExist) {
+      throw new IllegalStateException(
+          "Невозможно удалить проект, так как есть невыполненные задачи");
+    } else {
+      projectRepository.deleteById(id);
+    }
   }
 
   public void updateProject(Project project) {
