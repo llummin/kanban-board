@@ -1,19 +1,12 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import com.simbirsoft.kanbanboard.model.Project;
-import com.simbirsoft.kanbanboard.model.Release;
-import com.simbirsoft.kanbanboard.model.Task;
-import com.simbirsoft.kanbanboard.service.ProjectService;
-import com.simbirsoft.kanbanboard.service.ReleaseService;
-import com.simbirsoft.kanbanboard.service.TaskService;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import com.simbirsoft.kanbanboard.model.*;
+import com.simbirsoft.kanbanboard.service.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 public class TaskController {
@@ -50,9 +43,9 @@ public class TaskController {
 
   @PostMapping("/{projectId}/create")
   public String createTask(@PathVariable Long projectId, @RequestParam String name,
-      @RequestParam String author, @RequestParam String performer,
+      @RequestParam String author, @RequestParam String performer, String status,
       @RequestParam String version, @RequestParam LocalDateTime startDate,
-      @RequestParam LocalDateTime endDate, String status) {
+      @RequestParam LocalDateTime endDate) {
 
     // Получаем проект по id
     Optional<Project> optionalProject = projectService.getProjectById(projectId);

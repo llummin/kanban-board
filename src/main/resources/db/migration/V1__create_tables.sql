@@ -27,7 +27,7 @@ CREATE TABLE releases
     task_id        INTEGER     NOT NULL,
     rls_version    VARCHAR(50) NOT NULL,
     rls_start_date TIMESTAMP   NOT NULL,
-    rls_end_date   TIMESTAMP   NULL,
+    rls_end_date   TIMESTAMP   NOT NULL,
     FOREIGN KEY (task_id)
         REFERENCES tasks (task_id)
         ON DELETE CASCADE
