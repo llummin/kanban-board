@@ -44,15 +44,21 @@ public class ProjectController {
   }
 
   @PostMapping("/{id}/edit")
-  public String editProject(@PathVariable Long id, @ModelAttribute("project") Project project) {
+  public String editProject(
+      @PathVariable Long id,
+      @ModelAttribute("project") Project project,
+      @RequestParam(value = "isOpen", required = false) Boolean isOpen) {
+    Project existingProject = projectService.getProjectById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
     project.setId(id);
+    project.setOpen(isOpen != null ? isOpen : existingProject.isOpen());
     projectService.updateProject(project);
     return "redirect:/";
   }
 
   @GetMapping("/{id}/delete")
-  public String deleteProject(@PathVariable Long id) {
-    projectService.deleteProjectById(id);
+  public String closeProject(@PathVariable Long id) {
+    projectService.closeProjectById(id);
     return "redirect:/";
   }
 }

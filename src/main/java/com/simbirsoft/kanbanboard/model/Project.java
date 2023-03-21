@@ -49,7 +49,7 @@ public class Project {
     return isOpen;
   }
 
-  public void setIsOpen(Boolean isOpen) {
+  public void setOpen(Boolean isOpen) {
     this.isOpen = isOpen;
   }
 
@@ -59,5 +59,9 @@ public class Project {
 
   public void setTasks(List<Task> tasks) {
     this.tasks = tasks;
+  }
+
+  public Boolean isOpen() {
+    return isOpen;
   }
 }

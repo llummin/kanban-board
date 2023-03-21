@@ -31,7 +31,7 @@ public class ProjectService {
     projectRepository.save(project);
   }
 
-  public void deleteProjectById(Long id) {
+  public void closeProjectById(Long id) {
     Project project = projectRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
 
@@ -42,9 +42,10 @@ public class ProjectService {
 
     if (isBacklogOrInProgressTaskExist) {
       throw new IllegalStateException(
-          "Невозможно удалить проект, так как есть невыполненные задачи");
+          "Невозможно закрыть проект, так как есть невыполненные задачи");
     } else {
-      projectRepository.deleteById(id);
+      project.setOpen(false);
+      projectRepository.save(project);
     }
   }
 
