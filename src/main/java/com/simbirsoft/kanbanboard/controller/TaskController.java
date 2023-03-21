@@ -129,4 +129,20 @@ public class TaskController {
 
     return "redirect:/" + projId;
   }
+
+  @GetMapping("/{projId}/{taskId}/delete")
+  public String deleteTask(
+      @PathVariable("projId") Long projId,
+      @PathVariable("taskId") Long taskId
+  ) {
+    Task task = taskService.getTaskById(taskId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
+
+    // Проверяем, принадлежит ли задача текущему проекту
+    if (!task.getProject().getId().equals(projId)) {
+      return "redirect:/error";
+    }
+    taskService.deleteTaskById(taskId);
+    return "redirect:/" + projId;
+  }
 }

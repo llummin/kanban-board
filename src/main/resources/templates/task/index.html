@@ -21,6 +21,7 @@
       <th>Исполнитель</th>
       <th>Статус</th>
       <th>Релизы</th>
+      <th>Действия</th>
     </tr>
     </thead>
     <tbody>
@@ -35,6 +36,12 @@
               th:text="${release.version} + ' ' + ${release.startDate} + ' - ' +
               (${release.endDate} == null ? 'Неизвестно' : ${release.endDate})"></li>
         </ul>
+      </td>
+      <td>
+        <a th:href="@{/{projId}/{taskId}/edit(projId=${task.project.id}, taskId=${task.id})}" class="btn btn-sm btn-warning mr-2">Редактировать</a>
+        <a th:href="@{/{projId}/{taskId}/delete(projId=${task.project.id}, taskId=${task.id})}"
+           onclick="return confirm('Вы действительно хотите удалить эту задачу?')"
+           class="btn btn-sm btn-danger">Удалить</a>
       </td>
     </tr>
     </tbody>
