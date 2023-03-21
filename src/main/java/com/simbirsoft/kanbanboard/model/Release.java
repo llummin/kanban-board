@@ -3,6 +3,7 @@ package com.simbirsoft.kanbanboard.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "releases")
@@ -75,9 +76,12 @@ public class Release {
     this.endDate = endDate;
   }
 
-  public void setEndDate(LocalDate endDate) {
+
+  public String getFormattedStartDate() {
+    return this.startDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 
-  public void setStartDate(LocalDate startDate) {
+  public String getFormattedEndDate() {
+    return this.endDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 }
