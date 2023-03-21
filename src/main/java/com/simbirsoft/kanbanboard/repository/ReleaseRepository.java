@@ -10,4 +10,3 @@ import org.springframework.stereotype.Repository;
 public interface ReleaseRepository extends JpaRepository<Release, Long> {
   List<Release> findByTask(Task task);
 }
-

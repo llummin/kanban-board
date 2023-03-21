@@ -25,30 +25,36 @@ public class TaskController {
   @GetMapping("/{id}")
   public String viewTasksByProject(@PathVariable("id") Long projectId, Model model) {
     Project project = projectService.getProjectById(projectId)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid project id:" + projectId));
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projectId));
     model.addAttribute("project", project);
     model.addAttribute("tasks", taskService.getTasksByProject(project));
     return "task/index";
   }
 
   @GetMapping("/{id}/create")
-  public String createTask(@PathVariable("id") Long projectId, Model model) {
-    Project project = projectService.getProjectById(projectId)
-        .orElseThrow(() -> new IllegalArgumentException("Invalid project id:" + projectId));
+  public String createTask(@PathVariable("id") Long id, Model model) {
+    Project project = projectService.getProjectById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
     model.addAttribute("project", project);
     model.addAttribute("task", new Task());
     model.addAttribute("release", new Release());
     return "task/create";
   }
 
-  @PostMapping("/{projectId}/create")
-  public String createTask(@PathVariable Long projectId, @RequestParam String name,
-      @RequestParam String author, @RequestParam String performer, String status,
-      @RequestParam String version, @RequestParam LocalDateTime startDate,
-      @RequestParam LocalDateTime endDate) {
+  @PostMapping("/{id}/create")
+  public String createTask(
+      @PathVariable("id") Long id,
+      @RequestParam String name,
+      @RequestParam String author,
+      @RequestParam String performer,
+      @RequestParam String status,
+      @RequestParam String version,
+      @RequestParam LocalDateTime startDate,
+      @RequestParam LocalDateTime endDate
+  ) {
 
     // Получаем проект по id
-    Optional<Project> optionalProject = projectService.getProjectById(projectId);
+    Optional<Project> optionalProject = projectService.getProjectById(id);
     if (optionalProject.isEmpty()) {
       return "redirect:/";
     }
@@ -63,9 +69,59 @@ public class TaskController {
     release.setTask(task);
 
     // Сохраняем задачу и релиз в базу данных
-    taskService.createTask(task);
+    taskService.updateTask(task);
     releaseService.createRelease(release);
 
-    return "redirect:/" + projectId;
+    return "redirect:/" + id;
+  }
+
+  @GetMapping("/{projId}/{taskId}/edit")
+  public String editTask(
+      @PathVariable("projId") Long projId,
+      @PathVariable("taskId") Long taskId,
+      Model model
+  ) {
+    Project project = projectService.getProjectById(projId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
+    Task task = taskService.getTaskById(taskId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
+
+    model.addAttribute("project", project);
+    model.addAttribute("task", task);
+    return "task/edit";
+  }
+
+  @PostMapping("/{projId}/{taskId}/edit")
+  public String editTask(
+      @PathVariable("projId") Long projId,
+      @PathVariable("taskId") Long taskId,
+      @RequestParam String name,
+      @RequestParam String author,
+      @RequestParam String performer,
+      @RequestParam String status,
+      @ModelAttribute("project") Project project,
+      @ModelAttribute("release") Release release
+  ) {
+    // Получаем задачу по id
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
+    if (optionalTask.isEmpty()) {
+      return "redirect:/";
+    }
+    Task task = optionalTask.get();
+
+    // Обновляем поля задачи
+    task.setName(name);
+    task.setAuthor(author);
+    task.setPerformer(performer);
+    task.setStatus(status);
+
+    // Обновляем связь задачи с проектом
+    project.setId(projId);
+    task.setProject(project);
+
+    // Сохраняем задачу и релиз в базу данных
+    taskService.updateTask(task);
+
+    return "redirect:/" + projId;
   }
 }
