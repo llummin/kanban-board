@@ -16,7 +16,7 @@ public class ReleaseService {
     this.releaseRepository = releaseRepository;
   }
 
-  public List<Release> getReleaseByTask(Task task) {
+  public List<Release> getReleasesByTask(Task task) {
     return releaseRepository.findByTask(task);
   }
 

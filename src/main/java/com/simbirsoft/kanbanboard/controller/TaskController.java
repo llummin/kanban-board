@@ -22,28 +22,28 @@ public class TaskController {
     this.releaseService = releaseService;
   }
 
-  @GetMapping("/{id}")
-  public String viewTasksByProject(@PathVariable("id") Long projectId, Model model) {
-    Project project = projectService.getProjectById(projectId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projectId));
+  @GetMapping("/{projId}")
+  public String viewTasksByProject(@PathVariable("projId") Long projId, Model model) {
+    Project project = projectService.getProjectById(projId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
     model.addAttribute("project", project);
     model.addAttribute("tasks", taskService.getTasksByProject(project));
     return "task/index";
   }
 
-  @GetMapping("/{id}/create")
-  public String createTask(@PathVariable("id") Long id, Model model) {
-    Project project = projectService.getProjectById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
+  @GetMapping("/{projId}/create")
+  public String createTask(@PathVariable("projId") Long projId, Model model) {
+    Project project = projectService.getProjectById(projId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
     model.addAttribute("project", project);
     model.addAttribute("task", new Task());
     model.addAttribute("release", new Release());
     return "task/create";
   }
 
-  @PostMapping("/{id}/create")
+  @PostMapping("/{projId}/create")
   public String createTask(
-      @PathVariable("id") Long id,
+      @PathVariable("projId") Long projId,
       @RequestParam String name,
       @RequestParam String author,
       @RequestParam String performer,
@@ -54,7 +54,7 @@ public class TaskController {
   ) {
 
     // Получаем проект по id
-    Optional<Project> optionalProject = projectService.getProjectById(id);
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
     if (optionalProject.isEmpty()) {
       return "redirect:/";
     }
@@ -72,7 +72,7 @@ public class TaskController {
     taskService.updateTask(task);
     releaseService.createRelease(release);
 
-    return "redirect:/" + id;
+    return "redirect:/" + projId;
   }
 
   @GetMapping("/{projId}/{taskId}/edit")
