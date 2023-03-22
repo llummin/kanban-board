@@ -4,9 +4,11 @@ import com.simbirsoft.kanbanboard.model.Role;
 import com.simbirsoft.kanbanboard.model.User;
 import com.simbirsoft.kanbanboard.repository.RoleRepository;
 import com.simbirsoft.kanbanboard.repository.UserRepository;
+
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {

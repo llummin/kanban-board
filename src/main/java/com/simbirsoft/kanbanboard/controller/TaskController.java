@@ -1,10 +1,12 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import com.simbirsoft.kanbanboard.service.*;
 import com.simbirsoft.kanbanboard.model.*;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Optional;
 
 @Controller
@@ -14,8 +16,11 @@ public class TaskController {
   private final TaskService taskService;
   private final ReleaseService releaseService;
 
-  public TaskController(TaskService taskService, ProjectService projectService,
-      ReleaseService releaseService) {
+  public TaskController(
+      TaskService taskService,
+      ProjectService projectService,
+      ReleaseService releaseService
+  ) {
     this.taskService = taskService;
     this.projectService = projectService;
     this.releaseService = releaseService;

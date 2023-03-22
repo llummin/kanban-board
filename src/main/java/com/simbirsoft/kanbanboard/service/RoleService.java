@@ -2,9 +2,11 @@ package com.simbirsoft.kanbanboard.service;
 
 import com.simbirsoft.kanbanboard.model.Role;
 import com.simbirsoft.kanbanboard.repository.RoleRepository;
+
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
 @Service
 public class RoleService {

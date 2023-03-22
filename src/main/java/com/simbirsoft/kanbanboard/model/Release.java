@@ -1,8 +1,8 @@
 package com.simbirsoft.kanbanboard.model;
 
+import jakarta.persistence.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "releases")

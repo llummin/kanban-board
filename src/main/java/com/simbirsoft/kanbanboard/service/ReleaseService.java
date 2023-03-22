@@ -1,8 +1,11 @@
 package com.simbirsoft.kanbanboard.service;
 
+import com.simbirsoft.kanbanboard.model.Task;
+import com.simbirsoft.kanbanboard.model.Release;
+import com.simbirsoft.kanbanboard.repository.ReleaseRepository;
+
 import org.springframework.stereotype.Service;
-import com.simbirsoft.kanbanboard.repository.*;
-import com.simbirsoft.kanbanboard.model.*;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;

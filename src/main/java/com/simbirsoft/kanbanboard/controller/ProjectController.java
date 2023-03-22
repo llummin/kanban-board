@@ -1,12 +1,13 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import com.simbirsoft.kanbanboard.service.*;
 import com.simbirsoft.kanbanboard.model.*;
-import org.springframework.ui.Model;
-import javax.validation.Valid;
+import com.simbirsoft.kanbanboard.service.*;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/")
@@ -39,18 +40,19 @@ public class ProjectController {
   @GetMapping("/{id}/edit")
   public String editProject(@PathVariable Long id, Model model) {
     model.addAttribute("project", projectService.getProjectById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id)));
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта: " + id)));
     return "project/edit";
   }
 
   @PostMapping("/{id}/edit")
   public String editProject(
       @PathVariable Long id,
-      @ModelAttribute("project") Project project,
-      @RequestParam(value = "isOpen", required = false) Boolean isOpen
+      @RequestParam String title,
+      @RequestParam(value = "isOpen", required = false) Boolean isOpen,
+      @ModelAttribute("project") Project project
   ) {
     Project existingProject = projectService.getProjectById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта: " + id));
     project.setId(id);
     project.setIsOpen(isOpen != null ? isOpen : existingProject.getIsOpen());
     projectService.updateProject(project);

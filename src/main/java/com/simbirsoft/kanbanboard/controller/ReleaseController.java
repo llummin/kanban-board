@@ -1,10 +1,12 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import com.simbirsoft.kanbanboard.service.*;
 import com.simbirsoft.kanbanboard.model.*;
+import com.simbirsoft.kanbanboard.service.*;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -15,8 +17,11 @@ public class ReleaseController {
   private final TaskService taskService;
   private final ReleaseService releaseService;
 
-  public ReleaseController(ProjectService projectService, TaskService taskService,
-      ReleaseService releaseService) {
+  public ReleaseController(
+      ProjectService projectService,
+      TaskService taskService,
+      ReleaseService releaseService
+  ) {
     this.projectService = projectService;
     this.taskService = taskService;
     this.releaseService = releaseService;
@@ -128,7 +133,7 @@ public class ReleaseController {
   }
 
   @GetMapping("/{projId}/{taskId}/{rlsId}/delete")
-  public String deleteTask(
+  public String deleteRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
       @PathVariable("rlsId") Long rlsId
@@ -140,7 +145,8 @@ public class ReleaseController {
     if (!release.getTask().getId().equals(taskId)) {
       return "redirect:/error";
     }
-    releaseService.deleteReleaseById(taskId);
+
+    releaseService.deleteReleaseById(rlsId);
     return String.format("redirect:/%d/%d", projId, taskId);
   }
 }
