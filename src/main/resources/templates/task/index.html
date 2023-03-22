@@ -13,35 +13,71 @@
   <h1 class="mb-4">Задачи проекта: <span th:text="${project.title}"></span></h1>
   <a class="btn btn-primary mb-4" th:href="@{/{id}/create(id=${project.id})}">Создать
     задачу</a>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th>Название</th>
-      <th>Автор</th>
-      <th>Исполнитель</th>
-      <th>Статус</th>
-      <th>Действия</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="task : ${tasks}">
-      <td th:text="${task.name}"></td>
-      <td th:text="${task.author}"></td>
-      <td th:text="${task.performer}"></td>
-      <td th:text="${task.status}"></td>
-      <td>
-        <a th:href="@{/{projId}/{taskId}(projId=${task.project.id}, taskId=${task.id})}"
-           class="btn btn-sm btn-primary mr-2">Просмотреть</a>
-        <a th:href="@{/{projId}/{taskId}/edit(projId=${task.project.id}, taskId=${task.id})}"
-           class="btn btn-sm btn-info">Редактировать</a>
-        <a th:href="@{/{projId}/{taskId}/delete(projId=${task.project.id}, taskId=${task.id})}"
-           onclick="return confirm('Вы действительно хотите удалить эту задачу?')"
-           class="btn btn-sm btn-danger">Удалить</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <a class="btn btn-secondary" href="/">Назад к проектам</a>
+  <div class="row">
+    <div class="col-md-4">
+      <h2>BACKLOG</h2>
+      <div class="card-group">
+        <div th:each="task : ${tasks}" th:if="${task.status == 'BACKLOG'}">
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${task.name}"></h5>
+              <h6 class="card-subtitle mb-2 text-muted" th:text="${task.author}"></h6>
+              <p class="card-text" th:text="${task.performer}"></p>
+              <a th:href="@{/{projId}/{taskId}(projId=${task.project.id}, taskId=${task.id})}"
+                 class="btn btn-sm btn-primary mr-2">Просмотреть</a>
+              <a th:href="@{/{projId}/{taskId}/edit(projId=${task.project.id}, taskId=${task.id})}"
+                 class="btn btn-sm btn-info">Редактировать</a>
+              <a th:href="@{/{projId}/{taskId}/delete(projId=${task.project.id}, taskId=${task.id})}"
+                 onclick="return confirm('Вы действительно хотите удалить эту задачу?')"
+                 class="btn btn-sm btn-danger">Удалить</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h2>IN PROGRESS</h2>
+      <div class="card-group">
+        <div th:each="task : ${tasks}" th:if="${task.status == 'IN_PROGRESS'}">
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${task.name}"></h5>
+              <h6 class="card-subtitle mb-2 text-muted" th:text="${task.author}"></h6>
+              <p class="card-text" th:text="${task.performer}"></p>
+              <a th:href="@{/{projId}/{taskId}(projId=${task.project.id}, taskId=${task.id})}"
+                 class="btn btn-sm btn-primary mr-2">Просмотреть</a>
+              <a th:href="@{/{projId}/{taskId}/edit(projId=${task.project.id}, taskId=${task.id})}"
+                 class="btn btn-sm btn-info">Редактировать</a>
+              <a th:href="@{/{projId}/{taskId}/delete(projId=${task.project.id}, taskId=${task.id})}"
+                 onclick="return confirm('Вы действительно хотите удалить эту задачу?')"
+                 class="btn btn-sm btn-danger">Удалить</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h2>DONE</h2>
+      <div class="card-group">
+        <div th:each="task : ${tasks}" th:if="${task.status == 'DONE'}">
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="card-title" th:text="${task.name}"></h5>
+              <h6 class="card-subtitle mb-2 text-muted" th:text="${task.author}"></h6>
+              <p class="card-text" th:text="${task.performer}"></p>
+              <a th:href="@{/{projId}/{taskId}(projId=${task.project.id}, taskId=${task.id})}"
+                 class="btn btn-sm btn-primary mr-2">Просмотреть</a>
+              <a th:href="@{/{projId}/{taskId}/edit(projId=${task.project.id}, taskId=${task.id})}"
+                 class="btn btn-sm btn-info">Редактировать</a>
+              <a th:href="@{/{projId}/{taskId}/delete(projId=${task.project.id}, taskId=${task.id})}"
+                 onclick="return confirm('Вы действительно хотите удалить эту задачу?')"
+                 class="btn btn-sm btn-danger">Удалить</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
