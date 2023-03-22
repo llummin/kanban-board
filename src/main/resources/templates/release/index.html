@@ -34,6 +34,9 @@
       <td>
         <a th:href="@{/{projId}/{taskId}/{rlsId}/edit(projId=${project.id}, taskId=${task.id}, rlsId=${release.id})}"
            class="btn btn-sm btn-warning mr-2">Редактировать</a>
+        <a th:href="@{/{projId}/{taskId}/{rlsId}/delete(projId=${project.id}, taskId=${task.id}, rlsId=${release.id})}"
+           onclick="return confirm('Вы действительно хотите удалить этот релиз?')"
+           class="btn btn-sm btn-danger mr-2">Удалить</a>
       </td>
     </tr>
     </tbody>

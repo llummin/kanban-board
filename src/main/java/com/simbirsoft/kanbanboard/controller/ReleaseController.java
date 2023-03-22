@@ -120,11 +120,26 @@ public class ReleaseController {
     // Обновляем связь релиза с задачей
     task.setId(taskId);
     release.setTask(task);
-
     // Сохраняем релиз в базу данных
     releaseService.updateRelease(rlsId, version, startDate, endDate);
 
-    releaseService.updateRelease(release);
+    return String.format("redirect:/%d/%d", projId, taskId);
+  }
+
+  @GetMapping("/{projId}/{taskId}/{rlsId}/delete")
+  public String deleteTask(
+      @PathVariable("projId") Long projId,
+      @PathVariable("taskId") Long taskId,
+      @PathVariable("rlsId") Long rlsId
+  ) {
+    Release release = releaseService.getReleaseById(rlsId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id релиза:" + rlsId));
+
+    // Проверяем, принадлежит ли релиз к текущей задаче
+    if (!release.getTask().getId().equals(taskId)) {
+      return "redirect:/error";
+    }
+    releaseService.deleteReleaseById(rlsId);
     return String.format("redirect:/%d/%d", projId, taskId);
   }
 }

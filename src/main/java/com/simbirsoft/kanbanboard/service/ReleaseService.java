@@ -30,9 +30,6 @@ public class ReleaseService {
     releaseRepository.save(release);
   }
 
-  public void updateRelease(Release release) {
-    releaseRepository.save(release);
-  }
 
   public void updateRelease(Long id, String version, LocalDateTime startDate,
       LocalDateTime endDate) {
@@ -40,6 +37,11 @@ public class ReleaseService {
     release.setVersion(version);
     release.setStartDate(startDate);
     release.setEndDate(endDate);
+    releaseRepository.save(release);
+  }
+
+  public void deleteReleaseById(Long id) {
+    releaseRepository.deleteById(id);
   }
 
   public Optional<Release> getReleaseById(Long id) {
