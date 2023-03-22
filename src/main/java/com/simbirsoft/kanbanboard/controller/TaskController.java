@@ -5,7 +5,6 @@ import com.simbirsoft.kanbanboard.service.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -44,36 +43,21 @@ public class TaskController {
   @PostMapping("/{projId}/create")
   public String createTask(
       @PathVariable("projId") Long projId,
-      @RequestParam String name,
-      @RequestParam String author,
-      @RequestParam String performer,
-      @RequestParam String status,
-      @RequestParam String version,
-      @RequestParam LocalDateTime startDate,
-      @RequestParam LocalDateTime endDate
+      @ModelAttribute("task") Task task,
+      @ModelAttribute("release") Release release
   ) {
+    Project project = projectService.getProjectById(projId)
+        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
 
-    // Получаем проект по id
-    Optional<Project> optionalProject = projectService.getProjectById(projId);
-    if (optionalProject.isEmpty()) {
-      return "redirect:/";
-    }
-    Project project = optionalProject.get();
-
-    // Создаем задачу и устанавливаем связь с проектом
-    Task task = new Task(name, author, performer, status);
     task.setProject(project);
-
-    // Создаем релиз и устанавливаем связь с задачей
-    Release release = new Release(version, startDate, endDate);
-    release.setTask(task);
-
-    // Сохраняем задачу и релиз в базу данных
     taskService.updateTask(task);
+
+    release.setTask(task);
     releaseService.createRelease(release);
 
     return "redirect:/" + projId;
   }
+
 
   @GetMapping("/{projId}/{taskId}/edit")
   public String editTask(
@@ -114,18 +98,12 @@ public class TaskController {
     }
     Task task = optionalTask.get();
 
-    // Обновляем поля задачи
-    task.setName(name);
-    task.setAuthor(author);
-    task.setPerformer(performer);
-    task.setStatus(status);
-
     // Обновляем связь задачи с проектом
     project.setId(projId);
     task.setProject(project);
 
     // Сохраняем задачу и релиз в базу данных
-    taskService.updateTask(task);
+    taskService.updateTask(taskId, name, author, performer, status);
 
     return "redirect:/" + projId;
   }

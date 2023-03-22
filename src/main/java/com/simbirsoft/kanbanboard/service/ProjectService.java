@@ -3,6 +3,7 @@ package com.simbirsoft.kanbanboard.service;
 import com.simbirsoft.kanbanboard.model.Project;
 import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.ProjectRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,15 @@ public class ProjectService {
     this.projectRepository = projectRepository;
     this.taskService = taskService;
   }
+
+  public Project getProjectByIdOrThrow(Long id) {
+    Optional<Project> optionalProject = projectRepository.findById(id);
+    if (optionalProject.isEmpty()) {
+      throw new EntityNotFoundException("Project with id " + id + " not found");
+    }
+    return optionalProject.get();
+  }
+
 
   public List<Project> getAllProjects() {
     return projectRepository.findAll();
