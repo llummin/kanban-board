@@ -11,14 +11,14 @@ import org.springframework.ui.Model;
 @Controller
 public class ReleaseController {
 
-  private final TaskService taskService;
   private final ProjectService projectService;
+  private final TaskService taskService;
   private final ReleaseService releaseService;
 
-  public ReleaseController(TaskService taskService, ProjectService projectService,
+  public ReleaseController(ProjectService projectService, TaskService taskService,
       ReleaseService releaseService) {
-    this.taskService = taskService;
     this.projectService = projectService;
+    this.taskService = taskService;
     this.releaseService = releaseService;
   }
 
@@ -33,13 +33,13 @@ public class ReleaseController {
     Task task = taskService.getTaskById(taskId)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
     model.addAttribute("project", project);
-    model.addAttribute("task", taskService.getTasksByProject(project));
-    model.addAttribute("release", releaseService.getReleasesByTask(task));
+    model.addAttribute("task", task);
+    model.addAttribute("releases", releaseService.getReleasesByTask(task));
     return "release/index";
   }
 
   @GetMapping("/{projId}/{taskId}/create")
-  public String createRelease(
+  public String addRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
       Model model
@@ -55,14 +55,13 @@ public class ReleaseController {
   }
 
   @PostMapping("/{projId}/{taskId}/create")
-  public String createRelease(
+  public String addRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
       @RequestParam String version,
       @RequestParam LocalDateTime startDate,
       @RequestParam LocalDateTime endDate
   ) {
-
 
     // Получаем задачу по id
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
@@ -75,10 +74,9 @@ public class ReleaseController {
     Release release = new Release(version, startDate, endDate);
     release.setTask(task);
 
-    // Сохраняем задачу и релиз в базу данных
-    taskService.updateTask(task);
+    // Сохраняем релиз в базе данных
     releaseService.createRelease(release);
 
-    return "redirect:/" + projId;
+    return String.format("redirect:/%d/%d", projId, taskId);
   }
 }

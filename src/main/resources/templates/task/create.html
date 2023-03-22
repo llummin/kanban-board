@@ -46,6 +46,7 @@
       <input type="datetime-local" id="endDate" name="endDate" class="form-control" required>
     </div>
     <div class="mb-3">
+      <a class="btn btn-secondary" th:href="@{/{id}(id=${project.id})}">Назад</a>
       <button type="submit" class="btn btn-primary">Создать</button>
     </div>
   </form>

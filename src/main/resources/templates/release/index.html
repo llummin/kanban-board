@@ -10,6 +10,9 @@
 </head>
 <body>
 <div class="container my-5">
+  <h1 class="mb-4">История релизов задачи: <span th:text="${task.name}"></span></h1>
+  <a th:href="@{/{projId}/{taskId}/create(projId=${project.id}, taskId=${task.id})}"
+     class="btn btn-primary mb-4">Добавить релиз</a>
   <table class="table table-striped">
     <thead>
     <tr>
@@ -19,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="release : ${release}">
+    <tr th:each="release : ${releases}">
       <td th:text="${release.version}"></td>
       <td th:text="${release.formattedStartDate}"></td>
       <td th:text="${release.formattedEndDate}"></td>
