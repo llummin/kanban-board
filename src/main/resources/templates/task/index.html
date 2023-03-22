@@ -20,8 +20,6 @@
       <th>Автор</th>
       <th>Исполнитель</th>
       <th>Статус</th>
-      <th>Версия</th>
-      <th>Даты выполнения</th>
       <th>Действия</th>
     </tr>
     </thead>
@@ -32,19 +30,8 @@
       <td th:text="${task.performer}"></td>
       <td th:text="${task.status}"></td>
       <td>
-        <ul>
-          <li th:each="release : ${task.releases}">
-            <span th:text="${release.version}"></span>
-          </li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li th:each="release : ${task.releases}"
-              th:text="${release.formattedStartDate} + ' - ' + ${release.formattedEndDate}"></li>
-        </ul>
-      </td>
-      <td>
+        <a th:href="@{/{projId}/{taskId}(projId=${task.project.id}, taskId=${task.id})}"
+           class="btn btn-sm btn-primary mr-2">Просмотреть</a>
         <a th:href="@{/{projId}/{taskId}/edit(projId=${task.project.id}, taskId=${task.id})}"
            class="btn btn-sm btn-info">Редактировать</a>
         <a th:href="@{/{projId}/{taskId}/delete(projId=${task.project.id}, taskId=${task.id})}"
