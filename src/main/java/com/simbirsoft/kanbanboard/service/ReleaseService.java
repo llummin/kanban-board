@@ -21,6 +21,11 @@ public class ReleaseService {
   }
 
   public void createRelease(Release release) {
+    LocalDateTime startDate = release.getStartDate();
+    LocalDateTime endDate = release.getEndDate();
+    if (startDate.isAfter(endDate)) {
+      throw new IllegalArgumentException("Дата создания не может быть позже даты конца");
+    }
     releaseRepository.save(release);
   }
 

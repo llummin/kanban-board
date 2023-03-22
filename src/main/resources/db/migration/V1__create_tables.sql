@@ -54,3 +54,7 @@ CREATE TABLE users
 -- Создание индексов
 CREATE INDEX tasks_proj_id_index ON tasks (proj_id);
 CREATE INDEX releases_task_id_index ON releases (task_id);
+
+-- Создание ограничения
+ALTER TABLE releases
+    ADD CONSTRAINT check_release_dates CHECK (rls_start_date < rls_end_date);

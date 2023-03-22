@@ -3,7 +3,6 @@ package com.simbirsoft.kanbanboard.controller;
 import com.simbirsoft.kanbanboard.model.*;
 import com.simbirsoft.kanbanboard.service.*;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,9 +57,7 @@ public class ReleaseController {
   public String addRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
-      @RequestParam String version,
-      @RequestParam LocalDateTime startDate,
-      @RequestParam LocalDateTime endDate
+      Release release
   ) {
 
     // Получаем задачу по id
@@ -71,7 +68,6 @@ public class ReleaseController {
     Task task = optionalTask.get();
 
     // Создаем релиз и устанавливаем связь с задачей
-    Release release = new Release(version, startDate, endDate);
     release.setTask(task);
 
     // Сохраняем релиз в базе данных
