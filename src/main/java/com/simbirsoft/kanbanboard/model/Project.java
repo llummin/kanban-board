@@ -1,7 +1,6 @@
 package com.simbirsoft.kanbanboard.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -17,9 +16,6 @@ public class Project {
 
   @Column(name = "proj_is_open", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
   private Boolean isOpen = true;
-
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-  private List<Task> tasks;
 
   public Project() {
   }
@@ -49,19 +45,7 @@ public class Project {
     return isOpen;
   }
 
-  public void setOpen(Boolean isOpen) {
+  public void setIsOpen(Boolean isOpen) {
     this.isOpen = isOpen;
-  }
-
-  public List<Task> getTasks() {
-    return tasks;
-  }
-
-  public void setTasks(List<Task> tasks) {
-    this.tasks = tasks;
-  }
-
-  public Boolean isOpen() {
-    return isOpen;
   }
 }

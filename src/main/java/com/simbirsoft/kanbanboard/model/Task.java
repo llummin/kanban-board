@@ -34,13 +34,6 @@ public class Task {
   public Task() {
   }
 
-  public Task(String name, String author, String performer, String status) {
-    this.name = name;
-    this.author = author;
-    this.performer = performer;
-    this.status = status;
-  }
-
   public Long getId() {
     return id;
   }
@@ -88,13 +81,4 @@ public class Task {
   public void setStatus(String status) {
     this.status = status;
   }
-
-  public List<Release> getReleases() {
-    return releases;
-  }
-
-  public void setReleases(List<Release> releases) {
-    this.releases = releases;
-  }
-
 }

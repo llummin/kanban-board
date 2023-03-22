@@ -1,12 +1,12 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import com.simbirsoft.kanbanboard.model.*;
-import com.simbirsoft.kanbanboard.service.*;
-import java.time.LocalDateTime;
-import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import com.simbirsoft.kanbanboard.service.*;
+import com.simbirsoft.kanbanboard.model.*;
 import org.springframework.ui.Model;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 public class ReleaseController {
@@ -70,7 +70,7 @@ public class ReleaseController {
     // Создаем релиз и устанавливаем связь с задачей
     release.setTask(task);
     // Сохраняем релиз в базе данных
-    releaseService.createRelease(release);
+    releaseService.updateRelease(release);
 
     return String.format("redirect:/%d/%d", projId, taskId);
   }
@@ -120,6 +120,7 @@ public class ReleaseController {
     // Обновляем связь релиза с задачей
     task.setId(taskId);
     release.setTask(task);
+
     // Сохраняем релиз в базу данных
     releaseService.updateRelease(rlsId, version, startDate, endDate);
 
@@ -139,7 +140,7 @@ public class ReleaseController {
     if (!release.getTask().getId().equals(taskId)) {
       return "redirect:/error";
     }
-    releaseService.deleteReleaseById(rlsId);
+    releaseService.deleteReleaseById(taskId);
     return String.format("redirect:/%d/%d", projId, taskId);
   }
 }

@@ -1,11 +1,11 @@
 package com.simbirsoft.kanbanboard.controller;
 
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import com.simbirsoft.kanbanboard.service.*;
+import com.simbirsoft.kanbanboard.model.*;
 import org.springframework.ui.Model;
-import com.simbirsoft.kanbanboard.service.ProjectService;
-import com.simbirsoft.kanbanboard.model.Project;
+import javax.validation.Valid;
 
 
 @Controller
@@ -19,7 +19,7 @@ public class ProjectController {
   }
 
   @GetMapping
-  public String showAllProjects(Model model) {
+  public String viewAllProjects(Model model) {
     model.addAttribute("project", projectService.getAllProjects());
     return "project/index";
   }
@@ -32,7 +32,7 @@ public class ProjectController {
 
   @PostMapping("/create")
   public String createProject(@ModelAttribute("project") @Valid Project project) {
-    projectService.createProject(project.getTitle());
+    projectService.updateProject(project);
     return "redirect:/";
   }
 
@@ -47,11 +47,12 @@ public class ProjectController {
   public String editProject(
       @PathVariable Long id,
       @ModelAttribute("project") Project project,
-      @RequestParam(value = "isOpen", required = false) Boolean isOpen) {
+      @RequestParam(value = "isOpen", required = false) Boolean isOpen
+  ) {
     Project existingProject = projectService.getProjectById(id)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
     project.setId(id);
-    project.setOpen(isOpen != null ? isOpen : existingProject.isOpen());
+    project.setIsOpen(isOpen != null ? isOpen : existingProject.getIsOpen());
     projectService.updateProject(project);
     return "redirect:/";
   }

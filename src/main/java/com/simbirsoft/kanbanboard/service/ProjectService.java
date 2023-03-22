@@ -1,12 +1,10 @@
 package com.simbirsoft.kanbanboard.service;
 
-import com.simbirsoft.kanbanboard.model.Project;
-import com.simbirsoft.kanbanboard.model.Task;
-import com.simbirsoft.kanbanboard.repository.ProjectRepository;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
+import com.simbirsoft.kanbanboard.repository.*;
+import com.simbirsoft.kanbanboard.model.*;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ProjectService {
@@ -19,15 +17,6 @@ public class ProjectService {
     this.taskService = taskService;
   }
 
-  public Project getProjectByIdOrThrow(Long id) {
-    Optional<Project> optionalProject = projectRepository.findById(id);
-    if (optionalProject.isEmpty()) {
-      throw new EntityNotFoundException("Project with id " + id + " not found");
-    }
-    return optionalProject.get();
-  }
-
-
   public List<Project> getAllProjects() {
     return projectRepository.findAll();
   }
@@ -36,8 +25,7 @@ public class ProjectService {
     return projectRepository.findById(id);
   }
 
-  public void createProject(String title) {
-    Project project = new Project(title, true);
+  public void updateProject(Project project) {
     projectRepository.save(project);
   }
 
@@ -54,12 +42,8 @@ public class ProjectService {
       throw new IllegalStateException(
           "Невозможно закрыть проект, так как есть невыполненные задачи");
     } else {
-      project.setOpen(false);
+      project.setIsOpen(false);
       projectRepository.save(project);
     }
-  }
-
-  public void updateProject(Project project) {
-    projectRepository.save(project);
   }
 }

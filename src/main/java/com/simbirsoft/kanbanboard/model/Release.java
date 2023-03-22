@@ -1,9 +1,8 @@
 package com.simbirsoft.kanbanboard.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "releases")
@@ -28,12 +27,6 @@ public class Release {
   private LocalDateTime endDate;
 
   public Release() {
-  }
-
-  public Release(String version, LocalDateTime startDate, LocalDateTime endDate) {
-    this.version = version;
-    this.startDate = startDate;
-    this.endDate = endDate;
   }
 
   public Long getId() {
@@ -76,12 +69,11 @@ public class Release {
     this.endDate = endDate;
   }
 
-
   public String getFormattedStartDate() {
-    return this.startDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+    return getStartDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 
   public String getFormattedEndDate() {
-    return this.endDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+    return getEndDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
   }
 }

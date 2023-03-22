@@ -21,8 +21,8 @@
       <label for="title" class="form-label">Название:</label>
       <input type="text" th:field="*{title}" id="title" class="form-control" required>
     </div>
-    <div class="form-check" th:if="${!project.isOpen}">
-      <input class="form-check-input" type="checkbox" th:field="*{isOpen}" id="isOpen">
+    <div class="form-check" th:if="${!project.getIsOpen}">
+      <input class="form-check-input" type="checkbox" th:field="*{getIsOpen}" id="isOpen">
       <label class="form-check-label" for="isOpen">
         Открыть проект?
       </label>

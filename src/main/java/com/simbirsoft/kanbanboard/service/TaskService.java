@@ -1,9 +1,9 @@
 package com.simbirsoft.kanbanboard.service;
 
-import com.simbirsoft.kanbanboard.repository.TaskRepository;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+import com.simbirsoft.kanbanboard.repository.*;
 import com.simbirsoft.kanbanboard.model.*;
+import java.util.Optional;
 import java.util.List;
 
 @Service
@@ -13,6 +13,10 @@ public class TaskService {
 
   public TaskService(TaskRepository taskRepository) {
     this.taskRepository = taskRepository;
+  }
+
+  public List<Task> getTasksByProject(Project project) {
+    return taskRepository.findByProject(project);
   }
 
   public Optional<Task> getTaskById(Long id) {
@@ -32,12 +36,7 @@ public class TaskService {
     taskRepository.save(task);
   }
 
-
   public void deleteTaskById(Long id) {
     taskRepository.deleteById(id);
-  }
-
-  public List<Task> getTasksByProject(Project project) {
-    return taskRepository.findByProject(project);
   }
 }

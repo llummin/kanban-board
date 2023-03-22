@@ -1,12 +1,11 @@
 package com.simbirsoft.kanbanboard.service;
 
-import com.simbirsoft.kanbanboard.model.Release;
-import com.simbirsoft.kanbanboard.model.Task;
-import com.simbirsoft.kanbanboard.repository.ReleaseRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
+import com.simbirsoft.kanbanboard.repository.*;
+import com.simbirsoft.kanbanboard.model.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.List;
 
 @Service
 public class ReleaseService {
@@ -21,7 +20,11 @@ public class ReleaseService {
     return releaseRepository.findByTask(task);
   }
 
-  public void createRelease(Release release) {
+  public Optional<Release> getReleaseById(Long id) {
+    return releaseRepository.findById(id);
+  }
+
+  public void updateRelease(Release release) {
     LocalDateTime startDate = release.getStartDate();
     LocalDateTime endDate = release.getEndDate();
     if (startDate.isAfter(endDate)) {
@@ -29,7 +32,6 @@ public class ReleaseService {
     }
     releaseRepository.save(release);
   }
-
 
   public void updateRelease(Long id, String version, LocalDateTime startDate,
       LocalDateTime endDate) {
@@ -42,9 +44,5 @@ public class ReleaseService {
 
   public void deleteReleaseById(Long id) {
     releaseRepository.deleteById(id);
-  }
-
-  public Optional<Release> getReleaseById(Long id) {
-    return releaseRepository.findById(id);
   }
 }
