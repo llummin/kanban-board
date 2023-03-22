@@ -46,7 +46,7 @@
     const endDate = new Date(document.getElementById("endDate").value);
 
     if (startDate.getTime() >= endDate.getTime()) {
-      alert("Начало релиза не может быть больше конца релиза!");
+      alert("Начало релиза не может быть больше окончания релиза!");
     } else {
       event.target.submit();
     }

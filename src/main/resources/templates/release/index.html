@@ -23,6 +23,7 @@
       <th>Версия</th>
       <th>Начало выполнения</th>
       <th>Конец выполнения</th>
+      <th>Действия</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,10 @@
       <td th:text="${release.version}"></td>
       <td th:text="${release.formattedStartDate}"></td>
       <td th:text="${release.formattedEndDate}"></td>
+      <td>
+        <a th:href="@{/{projId}/{taskId}/{rlsId}/edit(projId=${project.id}, taskId=${task.id}, rlsId=${release.id})}"
+           class="btn btn-sm btn-warning mr-2">Редактировать</a>
+      </td>
     </tr>
     </tbody>
   </table>

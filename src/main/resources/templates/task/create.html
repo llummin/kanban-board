@@ -37,15 +37,15 @@
       </select>
     </div>
     <div class="mb-3">
-      <label for="version" class="form-label">Версия:</label>
+      <label for="version" class="form-label">Версия релиза:</label>
       <input type="text" id="version" name="version" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label for="startDate" class="form-label">Начало:</label>
+      <label for="startDate" class="form-label">Начало релиза:</label>
       <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label for="endDate" class="form-label">Конец:</label>
+      <label for="endDate" class="form-label">Конец релиза:</label>
       <input type="datetime-local" id="endDate" name="endDate" class="form-control" required>
     </div>
     <div class="mb-3">
@@ -65,7 +65,7 @@
     const endDate = new Date(document.getElementById("endDate").value);
 
     if (startDate.getTime() >= endDate.getTime()) {
-      alert("Начало релиза не может быть больше конца релиза!");
+      alert("Начало релиза не может быть больше окончания релиза!");
     } else {
       event.target.submit();
     }

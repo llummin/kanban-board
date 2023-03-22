@@ -5,6 +5,7 @@ import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.ReleaseRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,16 +25,24 @@ public class ReleaseService {
     LocalDateTime startDate = release.getStartDate();
     LocalDateTime endDate = release.getEndDate();
     if (startDate.isAfter(endDate)) {
-      throw new IllegalArgumentException("Дата создания не может быть позже даты конца");
+      throw new IllegalArgumentException("Дата создания не может быть позже даты окончания");
     }
     releaseRepository.save(release);
   }
 
-  public void updateRelease(Long taskById, String version, LocalDateTime startDate,
+  public void updateRelease(Release release) {
+    releaseRepository.save(release);
+  }
+
+  public void updateRelease(Long id, String version, LocalDateTime startDate,
       LocalDateTime endDate) {
-    Release release = releaseRepository.getReferenceById(taskById);
+    Release release = releaseRepository.getReferenceById(id);
     release.setVersion(version);
     release.setStartDate(startDate);
     release.setEndDate(endDate);
+  }
+
+  public Optional<Release> getReleaseById(Long id) {
+    return releaseRepository.findById(id);
   }
 }
