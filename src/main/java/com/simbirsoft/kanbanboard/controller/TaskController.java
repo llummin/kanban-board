@@ -3,6 +3,7 @@ package com.simbirsoft.kanbanboard.controller;
 import com.simbirsoft.kanbanboard.service.*;
 import com.simbirsoft.kanbanboard.model.*;
 
+import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,6 @@ public class TaskController {
 
     task.setProject(project);
     taskService.updateTask(task);
-
     release.setTask(task);
     releaseService.updateRelease(release);
 
@@ -69,39 +69,33 @@ public class TaskController {
       @PathVariable("taskId") Long taskId,
       Model model
   ) {
-    Project project = projectService.getProjectById(projId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
-    Task task = taskService.getTaskById(taskId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
-
-    // Проверяем, принадлежит ли задача текущему проекту
-    if (!task.getProject().getId().equals(projId)) {
-      return "redirect:/error";
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
+    if (optionalProject.isPresent() && optionalTask.isPresent()) {
+      Project project = optionalProject.get();
+      Task task = optionalTask.get();
+      taskService.checkTaskBelongsToProject(task, project.getId());
+      model.addAttribute("project", project);
+      model.addAttribute("task", task);
+      return "task/edit";
+    } else {
+      return "error";
     }
-
-    model.addAttribute("project", project);
-    model.addAttribute("task", task);
-    return "task/edit";
   }
 
   @PostMapping("/{projId}/{taskId}/edit")
   public String editTask(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
+      @ModelAttribute("project") Project project,
+      @ModelAttribute("release") Release release,
       @RequestParam String name,
       @RequestParam String author,
       @RequestParam String performer,
-      @RequestParam String status,
-      @ModelAttribute("project") Project project,
-      @ModelAttribute("release") Release release
+      @RequestParam String status
   ) {
-
-    // Обновляем связь задачи с проектом
     project.setId(projId);
-
-    // Сохраняем задачу и релиз в базу данных
     taskService.updateTask(taskId, name, author, performer, status);
-
     return "redirect:/" + projId;
   }
 
@@ -110,14 +104,15 @@ public class TaskController {
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId
   ) {
-    Task task = taskService.getTaskById(taskId).orElseThrow();
-
-    // Проверяем, принадлежит ли задача текущему проекту
-    if (!task.getProject().getId().equals(projId)) {
-      return "redirect:/error";
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
+    if (optionalProject.isPresent() && optionalTask.isPresent()) {
+      Task task = optionalTask.get();
+      taskService.checkTaskBelongsToProject(task, projId);
+      taskService.deleteTaskById(taskId);
+      return "redirect:/" + projId;
+    } else {
+      return "error";
     }
-
-    taskService.deleteTaskById(taskId);
-    return "redirect:/" + projId;
   }
 }

@@ -3,7 +3,6 @@ package com.simbirsoft.kanbanboard.service;
 import com.simbirsoft.kanbanboard.model.Project;
 import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.TaskRepository;
-import com.simbirsoft.kanbanboard.repository.ProjectRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,9 @@ import java.util.List;
 public class TaskService {
 
   private final TaskRepository taskRepository;
-  private final ProjectRepository projectRepository;
 
-  public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository) {
+  public TaskService(TaskRepository taskRepository) {
     this.taskRepository = taskRepository;
-    this.projectRepository = projectRepository;
   }
 
   public List<Task> getTasksByProject(Project project) {
