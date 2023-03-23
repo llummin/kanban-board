@@ -1,9 +1,9 @@
 package com.simbirsoft.kanbanboard.service;
 
 import com.simbirsoft.kanbanboard.model.Project;
-import com.simbirsoft.kanbanboard.model.Release;
 import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.ProjectRepository;
+import com.simbirsoft.kanbanboard.repository.TaskRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ import java.util.Optional;
 public class ProjectService {
 
   private final ProjectRepository projectRepository;
-  private final TaskService taskService;
+  private final TaskRepository taskRepository;
 
-  public ProjectService(ProjectRepository projectRepository, TaskService taskService) {
+  public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
     this.projectRepository = projectRepository;
-    this.taskService = taskService;
+    this.taskRepository = taskRepository;
   }
 
   public List<Project> getAllProjects() {
@@ -37,7 +37,7 @@ public class ProjectService {
     Project project = projectRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + id));
 
-    List<Task> tasks = taskService.getTasksByProject(project);
+    List<Task> tasks = taskRepository.findByProject(project);
 
     boolean isBacklogOrInProgressTaskExist = tasks.stream()
         .anyMatch(t -> t.getStatus().equals("BACKLOG") || t.getStatus().equals("IN_PROGRESS"));

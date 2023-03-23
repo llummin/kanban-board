@@ -3,6 +3,7 @@ package com.simbirsoft.kanbanboard.service;
 import com.simbirsoft.kanbanboard.model.Project;
 import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.TaskRepository;
+import com.simbirsoft.kanbanboard.repository.ProjectRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class TaskService {
 
   private final TaskRepository taskRepository;
+  private final ProjectRepository projectRepository;
 
-  public TaskService(TaskRepository taskRepository) {
+  public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository) {
     this.taskRepository = taskRepository;
+    this.projectRepository = projectRepository;
   }
 
   public List<Task> getTasksByProject(Project project) {
@@ -24,6 +27,12 @@ public class TaskService {
 
   public Optional<Task> getTaskById(Long id) {
     return taskRepository.findById(id);
+  }
+
+  public void checkTaskBelongsToProject(Task task, Long projectId) {
+    if (!task.getProject().getId().equals(projectId)) {
+      throw new IllegalArgumentException("Задача не принадлежит проекту");
+    }
   }
 
   public void updateTask(Task task) {

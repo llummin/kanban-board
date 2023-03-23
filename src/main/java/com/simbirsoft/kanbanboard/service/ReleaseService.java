@@ -48,4 +48,16 @@ public class ReleaseService {
   public void deleteReleaseById(Long id) {
     releaseRepository.deleteById(id);
   }
+
+  public void checkReleaseBelongsToTask(Release release, Long taskId) {
+    if (!release.getTask().getId().equals(taskId)) {
+      throw new IllegalArgumentException("Релиз не принадлежит задаче");
+    }
+  }
+
+  public void checkReleaseBelongsToProject(Release release, Long projectId) {
+    if (!release.getTask().getProject().getId().equals(projectId)) {
+      throw new IllegalArgumentException("Релиз не принадлежит задаче и проекту");
+    }
+  }
 }

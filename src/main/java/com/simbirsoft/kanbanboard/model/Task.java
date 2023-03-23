@@ -1,6 +1,7 @@
 package com.simbirsoft.kanbanboard.model;
 
 import jakarta.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -80,5 +81,9 @@ public class Task {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public List<Release> getReleases() {
+    return releases;
   }
 }

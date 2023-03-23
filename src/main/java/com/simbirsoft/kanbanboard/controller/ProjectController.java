@@ -47,13 +47,11 @@ public class ProjectController {
   @PostMapping("/{id}/edit")
   public String editProject(
       @PathVariable Long id,
-      @RequestParam String title,
       @RequestParam(value = "isOpen", required = false) Boolean isOpen,
       @ModelAttribute("project") Project project
   ) {
     Project existingProject = projectService.getProjectById(id)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта: " + id));
-    project.setId(id);
     project.setIsOpen(isOpen != null ? isOpen : existingProject.getIsOpen());
     projectService.updateProject(project);
     return "redirect:/";

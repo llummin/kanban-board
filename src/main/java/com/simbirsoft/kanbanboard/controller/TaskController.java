@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @Controller
 public class TaskController {
@@ -96,16 +95,9 @@ public class TaskController {
       @ModelAttribute("project") Project project,
       @ModelAttribute("release") Release release
   ) {
-    // Получаем задачу по id
-    Optional<Task> optionalTask = taskService.getTaskById(taskId);
-    if (optionalTask.isEmpty()) {
-      return "redirect:/";
-    }
-    Task task = optionalTask.get();
 
     // Обновляем связь задачи с проектом
     project.setId(projId);
-    task.setProject(project);
 
     // Сохраняем задачу и релиз в базу данных
     taskService.updateTask(taskId, name, author, performer, status);
@@ -118,13 +110,13 @@ public class TaskController {
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId
   ) {
-    Task task = taskService.getTaskById(taskId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
+    Task task = taskService.getTaskById(taskId).orElseThrow();
 
     // Проверяем, принадлежит ли задача текущему проекту
     if (!task.getProject().getId().equals(projId)) {
       return "redirect:/error";
     }
+
     taskService.deleteTaskById(taskId);
     return "redirect:/" + projId;
   }

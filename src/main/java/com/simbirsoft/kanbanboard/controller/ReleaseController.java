@@ -3,12 +3,12 @@ package com.simbirsoft.kanbanboard.controller;
 import com.simbirsoft.kanbanboard.model.*;
 import com.simbirsoft.kanbanboard.service.*;
 
+import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Controller
 public class ReleaseController {
@@ -33,14 +33,19 @@ public class ReleaseController {
       @PathVariable("taskId") Long taskId,
       Model model
   ) {
-    Project project = projectService.getProjectById(projId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
-    Task task = taskService.getTaskById(taskId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
-    model.addAttribute("project", project);
-    model.addAttribute("task", task);
-    model.addAttribute("releases", releaseService.getReleasesByTask(task));
-    return "release/index";
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
+    if (optionalProject.isPresent() && optionalTask.isPresent()) {
+      Project project = optionalProject.get();
+      Task task = optionalTask.get();
+      taskService.checkTaskBelongsToProject(task, project.getId());
+      model.addAttribute("project", project);
+      model.addAttribute("task", task);
+      model.addAttribute("releases", releaseService.getReleasesByTask(task));
+      return "release/index";
+    } else {
+      return "error";
+    }
   }
 
   @GetMapping("/{projId}/{taskId}/create")
@@ -49,14 +54,19 @@ public class ReleaseController {
       @PathVariable("taskId") Long taskId,
       Model model
   ) {
-    Project project = projectService.getProjectById(projId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
-    Task task = taskService.getTaskById(taskId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
-    model.addAttribute("project", project);
-    model.addAttribute("task", task);
-    model.addAttribute("release", new Release());
-    return "release/create";
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
+    if (optionalProject.isPresent() && optionalTask.isPresent()) {
+      Project project = optionalProject.get();
+      Task task = optionalTask.get();
+      taskService.checkTaskBelongsToProject(task, project.getId());
+      model.addAttribute("project", project);
+      model.addAttribute("task", task);
+      model.addAttribute("release", new Release());
+      return "release/create";
+    } else {
+      return "error";
+    }
   }
 
   @PostMapping("/{projId}/{taskId}/create")
@@ -65,19 +75,16 @@ public class ReleaseController {
       @PathVariable("taskId") Long taskId,
       Release release
   ) {
-
-    // Получаем задачу по id
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
-    if (optionalTask.isEmpty()) {
-      return "redirect:/";
+    if (optionalTask.isPresent()) {
+      Task task = optionalTask.get();
+      taskService.checkTaskBelongsToProject(task, projId);
+      release.setTask(task);
+      releaseService.updateRelease(release);
+      return String.format("redirect:/%d/%d", projId, taskId);
+    } else {
+      return "error";
     }
-    Task task = optionalTask.get();
-    // Создаем релиз и устанавливаем связь с задачей
-    release.setTask(task);
-    // Сохраняем релиз в базе данных
-    releaseService.updateRelease(release);
-
-    return String.format("redirect:/%d/%d", projId, taskId);
   }
 
   @GetMapping("/{projId}/{taskId}/{rlsId}/edit")
@@ -87,21 +94,22 @@ public class ReleaseController {
       @PathVariable("rlsId") Long rlsId,
       Model model
   ) {
-
-    Project project = projectService.getProjectById(projId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
-    Task task = taskService.getTaskById(taskId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id задачи:" + taskId));
-    Release release = releaseService.getReleaseById(rlsId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id релиза:" + taskId));
-    // Проверяем, принадлежит ли релиз текущей задаче
-    if (!release.getTask().getId().equals(taskId)) {
-      return "redirect:/error";
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
+    Optional<Release> optionalRelease = releaseService.getReleaseById(rlsId);
+    if (optionalProject.isPresent() && optionalTask.isPresent() && optionalRelease.isPresent()) {
+      Project project = optionalProject.get();
+      Task task = optionalTask.get();
+      Release release = optionalRelease.get();
+      taskService.checkTaskBelongsToProject(task, projId);
+      releaseService.checkReleaseBelongsToTask(release, taskId);
+      model.addAttribute("project", project);
+      model.addAttribute("task", task);
+      model.addAttribute("release", release);
+      return "release/edit";
+    } else {
+      return "error";
     }
-    model.addAttribute("project", project);
-    model.addAttribute("task", task);
-    model.addAttribute("release", release);
-    return "release/edit";
   }
 
   @PostMapping("/{projId}/{taskId}/{rlsId}/edit")
@@ -109,27 +117,24 @@ public class ReleaseController {
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
       @PathVariable("rlsId") Long rlsId,
-      @ModelAttribute("task") Task task,
       @RequestParam String version,
       @RequestParam LocalDateTime startDate,
       @RequestParam LocalDateTime endDate
   ) {
-
-    // Получаем релиз по id
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
     Optional<Release> optionalRelease = releaseService.getReleaseById(rlsId);
-    if (optionalRelease.isEmpty()) {
-      return "redirect:/";
+    if (optionalProject.isPresent() && optionalTask.isPresent() && optionalRelease.isPresent()) {
+      Task task = optionalTask.get();
+      Release release = optionalRelease.get();
+      taskService.checkTaskBelongsToProject(task, projId);
+      releaseService.checkReleaseBelongsToTask(release, taskId);
+      releaseService.checkReleaseBelongsToProject(release, projId);
+      releaseService.updateRelease(rlsId, version, startDate, endDate);
+      return String.format("redirect:/%d/%d", projId, taskId);
+    } else {
+      return "error";
     }
-    Release release = optionalRelease.get();
-
-    // Обновляем связь релиза с задачей
-    task.setId(taskId);
-    release.setTask(task);
-
-    // Сохраняем релиз в базу данных
-    releaseService.updateRelease(rlsId, version, startDate, endDate);
-
-    return String.format("redirect:/%d/%d", projId, taskId);
   }
 
   @GetMapping("/{projId}/{taskId}/{rlsId}/delete")
@@ -138,15 +143,18 @@ public class ReleaseController {
       @PathVariable("taskId") Long taskId,
       @PathVariable("rlsId") Long rlsId
   ) {
-    Release release = releaseService.getReleaseById(rlsId)
-        .orElseThrow(() -> new IllegalArgumentException("Недопустимый id релиза:" + rlsId));
-
-    // Проверяем, принадлежит ли релиз к текущей задаче
-    if (!release.getTask().getId().equals(taskId)) {
-      return "redirect:/error";
+    Optional<Project> optionalProject = projectService.getProjectById(projId);
+    Optional<Task> optionalTask = taskService.getTaskById(taskId);
+    Optional<Release> optionalRelease = releaseService.getReleaseById(rlsId);
+    if (optionalProject.isPresent() && optionalTask.isPresent() && optionalRelease.isPresent()) {
+      Release release = optionalRelease.get();
+      taskService.checkTaskBelongsToProject(release.getTask(), taskId);
+      releaseService.checkReleaseBelongsToTask(release, taskId);
+      releaseService.checkReleaseBelongsToProject(release, projId);
+      releaseService.deleteReleaseById(rlsId);
+      return String.format("redirect:/%d/%d", projId, taskId);
+    } else {
+      return "error";
     }
-
-    releaseService.deleteReleaseById(rlsId);
-    return String.format("redirect:/%d/%d", projId, taskId);
   }
 }
