@@ -1,7 +1,6 @@
 package com.simbirsoft.kanbanboard.model;
 
 import jakarta.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -25,7 +24,8 @@ public class Project {
   public Project() {
   }
 
-  public Project(String title, Boolean isOpen) {
+  public Project(Long id, String title, Boolean isOpen) {
+    this.id = id;
     this.title = title;
     this.isOpen = isOpen;
   }

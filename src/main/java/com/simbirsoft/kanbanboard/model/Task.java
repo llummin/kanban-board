@@ -35,6 +35,16 @@ public class Task {
   public Task() {
   }
 
+  public Task(Long id, String name, String author, String performer, String status,
+      Project project) {
+    this.id = id;
+    this.name = name;
+    this.author = author;
+    this.performer = performer;
+    this.status = status;
+    this.project = project;
+  }
+
   public Long getId() {
     return id;
   }
