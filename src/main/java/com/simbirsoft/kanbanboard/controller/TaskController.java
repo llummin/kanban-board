@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
+@RequestMapping("/{projId}")
 public class TaskController {
 
   private final ProjectService projectService;
@@ -26,7 +27,7 @@ public class TaskController {
     this.releaseService = releaseService;
   }
 
-  @GetMapping("/{projId}")
+  @GetMapping
   public String viewTasksByProject(@PathVariable("projId") Long projId, Model model) {
     Project project = projectService.getProjectById(projId)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
@@ -35,7 +36,7 @@ public class TaskController {
     return "task/index";
   }
 
-  @GetMapping("/{projId}/create")
+  @GetMapping("/create")
   public String createTask(@PathVariable("projId") Long projId, Model model) {
     Project project = projectService.getProjectById(projId)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта:" + projId));
@@ -45,7 +46,7 @@ public class TaskController {
     return "task/create";
   }
 
-  @PostMapping("/{projId}/create")
+  @PostMapping("/create")
   public String createTask(
       @PathVariable("projId") Long projId,
       @ModelAttribute("task") Task task,
@@ -63,7 +64,7 @@ public class TaskController {
   }
 
 
-  @GetMapping("/{projId}/{taskId}/edit")
+  @GetMapping("/{taskId}/edit")
   public String editTask(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
@@ -71,6 +72,7 @@ public class TaskController {
   ) {
     Optional<Project> optionalProject = projectService.getProjectById(projId);
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
+
     if (optionalProject.isPresent() && optionalTask.isPresent()) {
       Project project = optionalProject.get();
       Task task = optionalTask.get();
@@ -83,7 +85,7 @@ public class TaskController {
     }
   }
 
-  @PostMapping("/{projId}/{taskId}/edit")
+  @PostMapping("/{taskId}/edit")
   public String editTask(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
@@ -99,13 +101,14 @@ public class TaskController {
     return "redirect:/" + projId;
   }
 
-  @GetMapping("/{projId}/{taskId}/delete")
+  @GetMapping("/{taskId}/delete")
   public String deleteTask(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId
   ) {
     Optional<Project> optionalProject = projectService.getProjectById(projId);
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
+
     if (optionalProject.isPresent() && optionalTask.isPresent()) {
       Task task = optionalTask.get();
       taskService.checkTaskBelongsToProject(task, projId);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @Controller
+@RequestMapping("/{projId}/{taskId}")
 public class ReleaseController {
 
   private final ProjectService projectService;
@@ -27,7 +28,7 @@ public class ReleaseController {
     this.releaseService = releaseService;
   }
 
-  @GetMapping("/{projId}/{taskId}")
+  @GetMapping
   public String viewReleasesByTask(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
@@ -35,6 +36,7 @@ public class ReleaseController {
   ) {
     Optional<Project> optionalProject = projectService.getProjectById(projId);
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
+
     if (optionalProject.isPresent() && optionalTask.isPresent()) {
       Project project = optionalProject.get();
       Task task = optionalTask.get();
@@ -48,7 +50,7 @@ public class ReleaseController {
     }
   }
 
-  @GetMapping("/{projId}/{taskId}/create")
+  @GetMapping("/create")
   public String addRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
@@ -56,6 +58,7 @@ public class ReleaseController {
   ) {
     Optional<Project> optionalProject = projectService.getProjectById(projId);
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
+
     if (optionalProject.isPresent() && optionalTask.isPresent()) {
       Project project = optionalProject.get();
       Task task = optionalTask.get();
@@ -69,13 +72,14 @@ public class ReleaseController {
     }
   }
 
-  @PostMapping("/{projId}/{taskId}/create")
+  @PostMapping("/create")
   public String addRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
       Release release
   ) {
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
+
     if (optionalTask.isPresent()) {
       Task task = optionalTask.get();
       taskService.checkTaskBelongsToProject(task, projId);
@@ -87,7 +91,7 @@ public class ReleaseController {
     }
   }
 
-  @GetMapping("/{projId}/{taskId}/{rlsId}/edit")
+  @GetMapping("/{rlsId}/edit")
   public String editRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
@@ -97,6 +101,7 @@ public class ReleaseController {
     Optional<Project> optionalProject = projectService.getProjectById(projId);
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
     Optional<Release> optionalRelease = releaseService.getReleaseById(rlsId);
+
     if (optionalProject.isPresent() && optionalTask.isPresent() && optionalRelease.isPresent()) {
       Project project = optionalProject.get();
       Task task = optionalTask.get();
@@ -112,7 +117,7 @@ public class ReleaseController {
     }
   }
 
-  @PostMapping("/{projId}/{taskId}/{rlsId}/edit")
+  @PostMapping("/{rlsId}/edit")
   public String editRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
@@ -124,6 +129,7 @@ public class ReleaseController {
     Optional<Project> optionalProject = projectService.getProjectById(projId);
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
     Optional<Release> optionalRelease = releaseService.getReleaseById(rlsId);
+
     if (optionalProject.isPresent() && optionalTask.isPresent() && optionalRelease.isPresent()) {
       Task task = optionalTask.get();
       Release release = optionalRelease.get();
@@ -136,7 +142,7 @@ public class ReleaseController {
     }
   }
 
-  @GetMapping("/{projId}/{taskId}/{rlsId}/delete")
+  @GetMapping("/{rlsId}/delete")
   public String deleteRelease(
       @PathVariable("projId") Long projId,
       @PathVariable("taskId") Long taskId,
@@ -145,6 +151,7 @@ public class ReleaseController {
     Optional<Project> optionalProject = projectService.getProjectById(projId);
     Optional<Task> optionalTask = taskService.getTaskById(taskId);
     Optional<Release> optionalRelease = releaseService.getReleaseById(rlsId);
+
     if (optionalProject.isPresent() && optionalTask.isPresent() && optionalRelease.isPresent()) {
       Release release = optionalRelease.get();
       taskService.checkTaskBelongsToProject(release.getTask(), projId);
