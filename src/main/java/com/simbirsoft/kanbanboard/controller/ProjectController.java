@@ -21,7 +21,7 @@ public class ProjectController {
 
   @GetMapping
   public String viewAllProjects(Model model) {
-    model.addAttribute("project", projectService.getAllProjects());
+    model.addAttribute("projects", projectService.getAllProjects());
     return "project/index";
   }
 
@@ -38,18 +38,16 @@ public class ProjectController {
   }
 
   @GetMapping("/{id}/edit")
-  public String editProject(@PathVariable Long id, Model model) {
+  public String editProject(@PathVariable("id") Long id, Model model) {
     model.addAttribute("project", projectService.getProjectById(id)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта: " + id)));
     return "project/edit";
   }
 
   @PostMapping("/{id}/edit")
-  public String editProject(
-      @PathVariable Long id,
+  public String editProject(@PathVariable Long id,
       @RequestParam(value = "isOpen", required = false) Boolean isOpen,
-      @ModelAttribute("project") Project project
-  ) {
+      @ModelAttribute("project") Project project) {
     Project existingProject = projectService.getProjectById(id)
         .orElseThrow(() -> new IllegalArgumentException("Недопустимый id проекта: " + id));
     project.setIsOpen(isOpen != null ? isOpen : existingProject.getIsOpen());

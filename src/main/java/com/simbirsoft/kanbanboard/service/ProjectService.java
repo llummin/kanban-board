@@ -5,6 +5,8 @@ import com.simbirsoft.kanbanboard.model.Task;
 import com.simbirsoft.kanbanboard.repository.ProjectRepository;
 import com.simbirsoft.kanbanboard.repository.TaskRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class ProjectService {
 
   private final ProjectRepository projectRepository;
   private final TaskRepository taskRepository;
+  private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
 
   public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
     this.projectRepository = projectRepository;
@@ -50,6 +53,7 @@ public class ProjectService {
    */
   public void updateProject(Project project) {
     projectRepository.save(project);
+    logger.info("Проект с id={} обновлен.", project.getId());
   }
 
   /**
@@ -57,7 +61,7 @@ public class ProjectService {
    *
    * @param id Идентификатор проекта, который будет закрыт.
    * @throws IllegalArgumentException Если указанный идентификатор не найден.
-   * @throws IllegalStateException Если в проекте есть какие-либо невыполненные задачи.
+   * @throws IllegalStateException    Если в проекте есть какие-либо невыполненные задачи.
    */
   public void closeProjectById(Long id) {
     Project project = projectRepository.findById(id)
@@ -69,11 +73,13 @@ public class ProjectService {
         .anyMatch(t -> t.getStatus().equals("BACKLOG") || t.getStatus().equals("IN_PROGRESS"));
 
     if (isBacklogOrInProgressTaskExist) {
+      logger.warn("Проект с id={} не может быть закрыт, так как есть невыполненные задачи.", id);
       throw new IllegalStateException(
           "Невозможно закрыть проект, так как есть невыполненные задачи");
     } else {
       project.setIsOpen(false);
       projectRepository.save(project);
+      logger.debug("Проект с id={} закрыт.", id);
     }
   }
 }

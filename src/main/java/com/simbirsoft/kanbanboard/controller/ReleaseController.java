@@ -129,7 +129,6 @@ public class ReleaseController {
       Release release = optionalRelease.get();
       taskService.checkTaskBelongsToProject(task, projId);
       releaseService.checkReleaseBelongsToTask(release, taskId);
-      releaseService.checkReleaseBelongsToProject(release, projId);
       releaseService.updateRelease(rlsId, version, startDate, endDate);
       return String.format("redirect:/%d/%d", projId, taskId);
     } else {
@@ -148,9 +147,8 @@ public class ReleaseController {
     Optional<Release> optionalRelease = releaseService.getReleaseById(rlsId);
     if (optionalProject.isPresent() && optionalTask.isPresent() && optionalRelease.isPresent()) {
       Release release = optionalRelease.get();
-      taskService.checkTaskBelongsToProject(release.getTask(), taskId);
+      taskService.checkTaskBelongsToProject(release.getTask(), projId);
       releaseService.checkReleaseBelongsToTask(release, taskId);
-      releaseService.checkReleaseBelongsToProject(release, projId);
       releaseService.deleteReleaseById(rlsId);
       return String.format("redirect:/%d/%d", projId, taskId);
     } else {

@@ -27,8 +27,11 @@
               <div class="card mb-2 bg-transparent border-dark">
                 <div class="card-body" style="min-width: 24rem;">
                   <h5 class="card-title" th:text="${task.name}"></h5>
-                  <h6 class="card-subtitle mb-4 text-muted" th:text="${task.author}"></h6>
-                  <h6 class="card-subtitle mb-2 text-muted" th:text="${task.performer}"></h6>
+                  <h6 class="card-subtitle mb-4 text-muted"><span>Автор:</span> <span
+                      th:text="${task.author}"></span></h6>
+                  <h6 class="card-subtitle mb-2 text-muted" th:if="${task.performer != null}">
+                    <span>Исполнитель:</span> <span th:text="${task.performer}"></span>
+                  </h6>
                 </div>
                 <div class="btn-group">
                   <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button"
@@ -63,8 +66,11 @@
               <div class="card mb-2 bg-transparent border-dark">
                 <div class="card-body" style="min-width: 24rem;">
                   <h5 class="card-title" th:text="${task.name}"></h5>
-                  <h6 class="card-subtitle mb-4 text-muted" th:text="${task.author}"></h6>
-                  <h6 class="card-subtitle mb-2 text-muted" th:text="${task.performer}"></h6>
+                  <h6 class="card-subtitle mb-4 text-muted"><span>Автор:</span> <span
+                      th:text="${task.author}"></span></h6>
+                  <h6 class="card-subtitle mb-2 text-muted" th:if="${task.performer != null}">
+                    <span>Исполнитель:</span> <span th:text="${task.performer}"></span>
+                  </h6>
                 </div>
                 <div class="btn-group">
                   <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button"
@@ -99,8 +105,11 @@
               <div class="card mb-2 bg-transparent border-dark">
                 <div class="card-body" style="min-width: 24rem;">
                   <h5 class="card-title" th:text="${task.name}"></h5>
-                  <h6 class="card-subtitle mb-4 text-muted" th:text="${task.author}"></h6>
-                  <h6 class="card-subtitle mb-2 text-muted" th:text="${task.performer}"></h6>
+                  <h6 class="card-subtitle mb-4 text-muted"><span>Автор:</span> <span
+                      th:text="${task.author}"></span></h6>
+                  <h6 class="card-subtitle mb-2 text-muted" th:if="${task.performer != null}">
+                    <span>Исполнитель:</span> <span th:text="${task.performer}"></span>
+                  </h6>
                 </div>
                 <div class="btn-group">
                   <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button"
