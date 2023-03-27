@@ -13,31 +13,68 @@
   <title>Изменение релиза</title>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5 mx-auto text-center">
   <h1>Изменение релиза</h1>
-  <form method="POST">
+  <form method="POST" id="releaseForm">
     <input type="hidden" th:field="*{release.id}">
-    <div class="mb-3">
+    <div class="col-md-4 col-lg-4 mb-3 mx-auto text-center">
       <label for="version" class="form-label">Версия:</label>
-      <input type="text" th:field="*{release.version}" id="version" class="form-control" required>
+      <input type="text" th:field="*{release.version}" id="version"
+             placeholder="Введите версию релиза"
+             aria-label="Поле ввода релиза"
+             class="form-control"
+             required>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-2 col-lg-2 mb-3">
+        <label for="startDate" class="form-label">Начало релиза:</label>
+        <input type="datetime-local" th:field="*{release.startDate}" id="startDate"
+               aria-label="Начало релиза"
+               class="form-control" required>
+      </div>
+      <div class="col-md-2 col-lg-2 mb-3">
+        <label for="endDate" class="form-label">Конец релиза:</label>
+        <input type="datetime-local" th:field="*{release.endDate}" id="endDate"
+               aria-label="Конец релиза"
+               class="form-control"
+               required>
+      </div>
     </div>
     <div class="mb-3">
-      <label for="startDate" class="form-label">Начало релиза:</label>
-      <input type="datetime-local" th:field="*{release.startDate}" id="startDate"
-             class="form-control" required>
+      <a th:href="@{/{projId}/{taskId}(projId=${project.id}, taskId=${task.id})}"
+         class="btn btn-secondary">Назад</a>
+      <button type="submit" class="btn btn-primary">Сохранить</button>
     </div>
-    <div class="mb-3">
-      <label for="endDate" class="form-label">Конец релиза:</label>
-      <input type="datetime-local" th:field="*{release.endDate}" id="endDate"
-             class="form-control" required>
-    </div>
-    <a th:href="@{/{projId}/{taskId}(projId=${project.id}, taskId=${task.id})}"
-       class="btn btn-secondary">Назад</a>
-    <button type="submit" class="btn btn-primary">Сохранить</button>
   </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
+<script>
+  window.onload = function () {
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const releaseStartDate = new Date('${release.startDate}').toISOString().slice(0, -8);
+    const releaseEndDate = new Date('${release.endDate}').toISOString().slice(0, -8);
+
+    startDateInput.value = releaseStartDate;
+    endDateInput.value = releaseEndDate;
+  }
+</script>
+
+<script>
+  document.getElementById("releaseForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const startDate = new Date(document.getElementById("startDate").value);
+    const endDate = new Date(document.getElementById("endDate").value);
+
+    if (startDate.getTime() >= endDate.getTime()) {
+      alert("Начало релиза не может быть больше окончания релиза!");
+    } else {
+      event.target.submit();
+    }
+  });
+</script>
 </body>
 </html>

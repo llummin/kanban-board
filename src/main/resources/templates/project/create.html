@@ -16,9 +16,10 @@
 <div class="container mt-5">
   <h1 class="mb-4">Создание проекта</h1>
   <form method="post" th:action="@{/create}" th:object="${project}">
-    <div class="mb-3">
+    <div class="col-md-3 mb-3">
       <label for="title" class="form-label">Название:</label>
-      <input type="text" id="title" th:field="*{title}" class="form-control" required/>
+      <input type="text" id="title" th:field="*{title}" placeholder="Введите название проекта"
+             aria-label="Поле ввода названия проекта" class="form-control" required/>
     </div>
     <a class="btn btn-secondary" href="/">Назад</a>
     <button type="submit" class="btn btn-primary">Создать</button>

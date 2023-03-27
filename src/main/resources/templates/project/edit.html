@@ -14,18 +14,18 @@
 </head>
 <body>
 <div class="container mt-5">
-  <h1>Изменение проекта</h1>
+  <h1 class="mb-4">Изменение проекта</h1>
   <form method="POST" th:object="${project}" th:action="@{/{id}/edit(id=${project.id})}">
     <input type="hidden" th:field="*{id}">
-    <div class="mb-3">
+    <div class="col-md-3 mb-3">
       <label for="title" class="form-label">Название:</label>
-      <input type="text" th:field="*{title}" id="title" class="form-control" required>
+      <input type="text" id="title" th:field="*{title}" placeholder="Введите название проекта"
+             aria-label="Поле ввода названия проекта" class="form-control" required/>
     </div>
-    <div class="form-check" th:if="${!project.getIsOpen}">
-      <input class="form-check-input" type="checkbox" th:field="*{isOpen}" id="isOpen">
-      <label class="form-check-label" for="isOpen">
-        Открыть проект?
-      </label>
+    <div class="mb-3 form-check form-switch" th:if="${!project.getIsOpen}">
+      <input class="form-check-input" type="checkbox" role="switch" th:field="*{isOpen}"
+             id="isOpen">
+      <label class="form-check-label" for="isOpen">Открыть проект?</label>
     </div>
     <a class="btn btn-secondary" href="/">Назад</a>
     <button type="submit" class="btn btn-primary">Сохранить</button>

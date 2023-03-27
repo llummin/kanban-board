@@ -3,6 +3,7 @@ package com.simbirsoft.kanbanboard.model;
 import jakarta.persistence.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "releases")
@@ -21,9 +22,11 @@ public class Release {
   private String version;
 
   @Column(name = "rls_start_date")
+  @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
   private LocalDateTime startDate;
 
   @Column(name = "rls_end_date")
+  @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
   private LocalDateTime endDate;
 
   public Release() {

@@ -13,44 +13,67 @@
   <title>Создание задачи</title>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5 mx-auto text-center">
   <h1 class="mb-4">Создание задачи</h1>
-  <form method="POST" id="releaseForm">
-    <div class="mb-3">
+  <form method="POST" id="taskForm">
+    <div class="col-md-6 mb-3 mx-auto text-center">
       <label for="name" class="form-label">Название:</label>
-      <input type="text" id="name" name="name" class="form-control" required>
+      <input type="text" id="name" name="name"
+             placeholder="Введите название"
+             aria-label="Поле ввода названия задачи"
+             class="form-control"
+             required>
     </div>
-    <div class="mb-3">
-      <label for="author" class="form-label">Автор:</label>
-      <input type="text" id="author" name="author" class="form-control" required>
+    <div class="row justify-content-center">
+      <div class="col-md-3 mb-3">
+        <label for="author" class="form-label">Автор:</label>
+        <input type="text" id="author" name="author"
+               placeholder="Введите автора"
+               aria-label="Поле ввода автора задачи"
+               class="form-control"
+               required>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="performer" class="form-label">Исполнитель:</label>
+        <input type="text" id="performer" name="performer"
+               placeholder="Введите исполнителя"
+               aria-label="Поле ввода исполнителя задачи"
+               class="form-control">
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="performer" class="form-label">Исполнитель:</label>
-      <input type="text" id="performer" name="performer" class="form-control">
+    <div class="row justify-content-center">
+      <div class="col-md-3 mb-3">
+        <label for="status" class="form-label">Статус:</label>
+        <select id="status" name="status" class="form-select">
+          <option value="BACKLOG">BACKLOG</option>
+          <option value="IN_PROGRESS" disabled>IN_PROGRESS</option>
+          <option value="DONE" disabled>DONE</option>
+        </select>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="version" class="form-label">Версия релиза:</label>
+        <input type="text" id="version" name="version"
+               placeholder="Введите версию релиза"
+               aria-label="Поле ввода версии релиза"
+               class="form-control"
+               required>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="status" class="form-label">Статус:</label>
-      <select id="status" name="status" class="form-select">
-        <option value="BACKLOG">BACKLOG</option>
-        <option value="IN_PROGRESS" disabled>IN_PROGRESS</option>
-        <option value="DONE" disabled>DONE</option>
-      </select>
+    <div class="row justify-content-center">
+      <div class="col-md-3 mb-3">
+        <label for="startDate" class="form-label">Начало релиза:</label>
+        <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="endDate" class="form-label">Конец релиза:</label>
+        <input type="datetime-local" id="endDate" name="endDate" class="form-control" required>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="version" class="form-label">Версия релиза:</label>
-      <input type="text" id="version" name="version" class="form-control" required>
-    </div>
-    <div class="mb-3">
-      <label for="startDate" class="form-label">Начало релиза:</label>
-      <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
-    </div>
-    <div class="mb-3">
-      <label for="endDate" class="form-label">Конец релиза:</label>
-      <input type="datetime-local" id="endDate" name="endDate" class="form-control" required>
-    </div>
-    <div class="mb-3">
-      <a class="btn btn-secondary" th:href="@{/{id}(id=${project.id})}">Назад</a>
-      <button type="submit" class="btn btn-primary">Создать</button>
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <a class="btn btn-secondary" th:href="@{/{id}(id=${project.id})}">Назад</a>
+        <button type="submit" class="btn btn-primary">Создать</button>
+      </div>
     </div>
   </form>
 </div>
@@ -58,7 +81,7 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
 <script>
-  document.getElementById("releaseForm").addEventListener("submit", function (event) {
+  document.getElementById("taskForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
     const startDate = new Date(document.getElementById("startDate").value);

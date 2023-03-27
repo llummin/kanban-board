@@ -13,20 +13,32 @@
   <title>Добавление релиза</title>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container mt-5 mx-auto text-center">
   <h1 class="mb-4">Добавление релиза</h1>
   <form method="POST" id="releaseForm">
-    <div class="mb-3">
+    <div class="col-md-4 col-lg-4 mb-3 mx-auto text-center">
       <label for="version" class="form-label">Версия:</label>
-      <input type="text" id="version" name="version" class="form-control" required>
+      <input type="text" id="version" name="version"
+             placeholder="Введите версию релиза"
+             aria-label="Поле ввода релиза"
+             class="form-control"
+             required>
     </div>
-    <div class="mb-3">
-      <label for="startDate" class="form-label">Начало:</label>
-      <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
-    </div>
-    <div class="mb-3">
-      <label for="endDate" class="form-label">Конец:</label>
-      <input type="datetime-local" id="endDate" name="endDate" class="form-control" required>
+    <div class="row justify-content-center">
+      <div class="col-md-2 col-lg-2 mb-3">
+        <label for="startDate" class="form-label">Начало:</label>
+        <input type="datetime-local" id="startDate" name="startDate"
+               aria-label="Начало релиза"
+               class="form-control"
+               required>
+      </div>
+      <div class="col-md-2 col-lg-2 mb-3">
+        <label for="endDate" class="form-label">Конец:</label>
+        <input type="datetime-local" id="endDate" name="endDate"
+               aria-label="Конец релиза"
+               class="form-control"
+               required>
+      </div>
     </div>
     <div class="mb-3">
       <a th:href="@{/{projId}/{taskId}(projId=${task.project.id}, taskId=${task.id})}"
