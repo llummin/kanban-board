@@ -1,28 +1,28 @@
-# Управление проектом
-Это приложение позволяет управлять проектом и его задачами. 
+# Project Management
+This application allows you to manage a project and its tasks. 
 
-## Сборка проекта
+## Building the Project
 
-Для сборки проекта необходимо выполнить следующие шаги:
+To build the project, you need to follow these steps:
 
-1. Склонировать репозиторий с помощью Git: `git clone <url репозитория>`
-2. Перейти в директорию проекта: `cd <название проекта>`
-3. Установить зависимости: `mvn install`
-4. Собрать приложение: `mvn package`
+1. Clone the repository using Git: `git clone <repository_url>`
+2. Navigate to the project directory: `cd <project_name>`
+3. Install dependencies: `mvn install`
+4. Build the application: `mvn package`
 
-## Запуск приложения
+## Running the Application
 
-Для запуска приложения необходимо выполнить следующие шаги:
+To run the application, you need to follow these steps:
 
-1. Создать базу данных в PostgreSQL с помощью утилиты psql или любым другим удобным способом.
-2. Настроить подключение к базе данных в файле application.properties. Для этого отредактируйте application.properties таким образом:
+1. Create a PostgreSQL database using the psql utility or any other convenient way.
+2. Configure the connection to the database in the application.properties file. To do this, edit the application.properties file as follows:
 
 
 ```properties
-# URL подключения к базе данных
-spring.datasource.url=jdbc:postgresql://localhost:5432/<ваша_бд>
-# Имя пользователя базы данных
-spring.datasource.username=<ваше_имя>
-# Пароль пользователя базы данных
-spring.datasource.password=<ваш_пароль>
+# Database connection URL
+spring.datasource.url=jdbc:postgresql://localhost:5432/<your_database>
+# Database username
+spring.datasource.username=<your_username>
+# Database password
+spring.datasource.password=<your_password>
 ```
