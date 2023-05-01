@@ -5,7 +5,7 @@ This application allows you to manage a project and its tasks.
 
 To build the project, you need to follow these steps:
 
-1. Clone the repository using Git: `git clone <repository_url>`
+1. Clone the repository using Git: `git clone https://github.com/Flockk/kanban-board.git`
 2. Navigate to the project directory: `cd <project_name>`
 3. Install dependencies: `mvn install`
 4. Build the application: `mvn package`
